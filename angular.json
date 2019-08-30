@@ -48,7 +48,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/demo-page",
+            "outputPath": "docs",
             "stylePreprocessorOptions": {
               "includePaths": ["projects/demo-page/src/styles"]
             },
@@ -75,7 +75,7 @@
                 }
               ],
               "optimization": true,
-              "outputHashing": "all",
+              "outputHashing": "none",
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,

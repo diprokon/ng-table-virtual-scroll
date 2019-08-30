@@ -59,7 +59,7 @@ const routes: Routes = [
     MatListModule,
     MatTabsModule,
     MatTableModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {useHash: true})
   ],
   providers: [],
   bootstrap: [AppComponent]
