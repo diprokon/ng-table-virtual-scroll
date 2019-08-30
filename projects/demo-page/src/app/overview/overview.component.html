@@ -1,0 +1,27 @@
+<p>
+  The <code>ng-table-virtual-scroll</code> package provides opportunity to use <a>Angular Material </a>
+  <code>cdk-virtual-scroll-viewport</code> with <code>mat-table</code>
+</p>
+
+<h3>tvsItemSize directive</h3>
+
+<p>
+  When all items are the same fixed size, you can use the FixedSizeTableVirtualScrollStrategy.
+  This can be easily added to your viewport using the <code>tvsItemSize</code> directive.
+  The advantage of this constraint is that it allows for better performance, since items do not need to be measured as they are rendered.
+</p>
+
+<h4>bufferMultiplier</h4>
+
+<p>
+  The fixed size strategy also supports setting a buffer parameter that determine how much extra content is
+  rendered beyond what is visible in the viewport.
+  The <code>bufferMultiplier</code> TODO
+</p>
+
+<h3>VirtualTableDataSource</h3>
+
+<p>
+  The <code>tvsItemSize</code> requires the <code>VirtualTableDataSource</code> to be provide as <code>mat-table[dataSource]</code>.
+  It is the same as the <code>MatTableDataSource</code>, but with few adjustments which was made so the virtual scroll could work.
+</p>

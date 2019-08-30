@@ -2,5 +2,163 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "projects",
-  "projects": {}
+  "projects": {
+    "ngTableVirtualScroll": {
+      "projectType": "library",
+      "root": "projects/ng-table-virtual-scroll",
+      "sourceRoot": "projects/ng-table-virtual-scroll/src",
+      "prefix": "tvs",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ng-table-virtual-scroll/tsconfig.lib.json",
+            "project": "projects/ng-table-virtual-scroll/ng-package.json"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ng-table-virtual-scroll/src/test.ts",
+            "tsConfig": "projects/ng-table-virtual-scroll/tsconfig.spec.json",
+            "karmaConfig": "projects/ng-table-virtual-scroll/karma.conf.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ng-table-virtual-scroll/tsconfig.lib.json",
+              "projects/ng-table-virtual-scroll/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "demo-page": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/demo-page",
+      "sourceRoot": "projects/demo-page/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/demo-page",
+            "stylePreprocessorOptions": {
+              "includePaths": ["projects/demo-page/src/styles"]
+            },
+            "index": "projects/demo-page/src/index.html",
+            "main": "projects/demo-page/src/main.ts",
+            "polyfills": "projects/demo-page/src/polyfills.ts",
+            "tsConfig": "projects/demo-page/tsconfig.app.json",
+            "aot": false,
+            "assets": [
+              "projects/demo-page/src/favicon.ico",
+              "projects/demo-page/src/assets"
+            ],
+            "styles": [
+              "projects/demo-page/src/styles.scss"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/demo-page/src/environments/environment.ts",
+                  "with": "projects/demo-page/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "demo-page:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "demo-page:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "demo-page:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/demo-page/src/test.ts",
+            "polyfills": "projects/demo-page/src/polyfills.ts",
+            "tsConfig": "projects/demo-page/tsconfig.spec.json",
+            "karmaConfig": "projects/demo-page/karma.conf.js",
+            "assets": [
+              "projects/demo-page/src/favicon.ico",
+              "projects/demo-page/src/assets"
+            ],
+            "styles": [
+              "projects/demo-page/src/styles.scss"
+            ],
+            "scripts": []
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/demo-page/tsconfig.app.json",
+              "projects/demo-page/tsconfig.spec.json",
+              "projects/demo-page/e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "projects/demo-page/e2e/protractor.conf.js",
+            "devServerTarget": "demo-page:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "demo-page:serve:production"
+            }
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngTableVirtualScroll",
+  "schematics": {
+    "@schematics/angular:component": {
+      "styleext": "scss"
+    }
+  }
 }

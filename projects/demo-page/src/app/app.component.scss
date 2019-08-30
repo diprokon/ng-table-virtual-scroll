@@ -1,0 +1,21 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.main-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.main-content {
+  position: absolute;
+  top: 0;
+  left: 240px;
+  right: 0;
+  height: 100%;
+  width: auto;
+  overflow: auto;
+  padding: 20px 290px 50px 20px;
+}

@@ -1,0 +1,117 @@
+/* You can add global styles to this file, and also import other style files */
+@import 'helpers';
+
+@include mat-core();
+
+@include angular-material-theme($mat-app-theme);
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: mat-theme-color(background, background);
+  font-family: Roboto,"Helvetica Neue Light","Helvetica Neue",Helvetica,Arial,"Lucida Grande",sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+code {
+  font-size: 90%;
+  font-family: 'Roboto Mono',monospace;
+}
+
+h1, h2 {
+  font-weight: 400;
+}
+
+.docs {
+  p {
+    font-size: 16px;
+    line-height: 28px;
+  }
+
+
+  .h3-header {
+    border-bottom: 1px solid rgba(0, 0, 0, .12);
+    font-weight: 300;
+    font-size: 24px;
+    line-height: 32px;
+    margin: 40px 0 20px;
+    padding-bottom: 3px;
+  }
+
+  .doc-import {
+    @include code();
+    display: inline;
+  }
+
+  .doc-class-name {
+    margin-top: 28px;
+    margin-bottom: 0;
+    display: block;
+    font-weight: 700;
+    font-size: 20px;
+    background: 0 0;
+
+    .extends .class-name {
+      text-decoration: none;
+      border-bottom: 1px dotted;
+      color: inherit;
+      font-weight: 400;
+      font-size: 18px;
+    }
+  }
+
+  .doc-selectors {
+    font-size: 15px;
+
+    .name {
+      @include code();
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+    border-radius: 2px;
+    border-spacing: 0;
+    margin: 0 0 32px;
+    width: 100%;
+
+    @include mat-elevation(2);
+
+    th {
+      font-weight: 400;
+      max-width: 100px;
+      padding: 13px 32px;
+      text-align: left;
+      background: #f5f5f5;
+    }
+
+    td  {
+      border: 1px solid rgba(0,0,0,.03);
+      font-weight: 400;
+      padding: 8px 16px;
+
+      &.prop-name {
+        font-size: 14px;
+        font-family: 'Roboto Mono',monospace;
+
+        .input {
+          font-size: 12px;
+        }
+        code  {
+          background: none;
+        }
+      }
+      &.prop-desc {
+        font-size: 15px;
+      }
+    }
+  }
+}

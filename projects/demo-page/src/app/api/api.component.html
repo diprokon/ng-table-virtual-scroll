@@ -1,0 +1,80 @@
+<h2>API reference for Angular Material table virtual scroll</h2>
+
+<p class="doc-import">
+  <code>import {{'{'}}TableVirtualScrollModule} from 'ng-table-virtual-scroll';</code>
+</p>
+
+<h3 class="h3-header">Directives</h3>
+
+<h4 class="doc-class-name">
+  <code>TableItemSizeDirective</code>
+</h4>
+
+<p>
+  A virtual scroll strategy for <code>mat-table</code> that supports fixed-size items.
+</p>
+
+<p class="doc-selectors">
+  <span class="label">Selector: </span>
+  <span class="name">cdk-virtual-scroll-viewport[tvsItemSize]</span>
+</p>
+
+<h5>Properties</h5>
+
+<table>
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Description</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr>
+    <td class="prop-name">
+      <div class="input">@Input()</div>
+      <code>headerHeight: number;</code>
+    </td>
+    <td class="prop-desc">
+      The size of the header row in the table (in pixels).
+      Defaults to 20px.
+    </td>
+  </tr>
+  <tr>
+    <td class="prop-name">
+      <div class="input">@Input()</div>
+      <code>rowHeight: number;</code>
+    </td>
+    <td class="prop-desc">
+      The size of the row in the table (in pixels).
+      Defaults to 20px.
+    </td>
+  </tr>
+  <tr>
+    <td class="prop-name">
+      <div class="input">@Input()</div>
+      <code>bufferMultiplier: number;</code>
+    </td>
+    <td class="prop-desc">
+      The amount of buffer rendered beyond the viewport will be equal to the size of the table
+      '<code>bufferMultiplier</code>' times;
+      Defaults to 1.7.
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<h3 class="h3-header">Classes</h3>
+
+<h4 class="doc-class-name">
+  <code>TableVirtualScrollDataSource</code>
+  <span class="extends">
+    extends
+    <a class="class-name" href="https://material.angular.io/components/table/api#MatTableDataSource">
+      MatTableDataSource
+    </a>
+  </span>
+</h4>
+
+<p>
+  Please, check the <code><a href="https://material.angular.io/components/table/api#MatTableDataSource">MatTableDataSource</a></code>
+</p>

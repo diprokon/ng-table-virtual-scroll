@@ -17,7 +17,15 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ng-table-virtual-scroll": [
+        "dist/ng-table-virtual-scroll"
+      ],
+      "ng-table-virtual-scroll/*": [
+        "dist/ng-table-virtual-scroll/*"
+      ]
+    }
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
