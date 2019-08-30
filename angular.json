@@ -74,6 +74,7 @@
                   "with": "projects/demo-page/src/environments/environment.prod.ts"
                 }
               ],
+              "baseHref": "/ng-table-virtual-scroll/",
               "optimization": true,
               "outputHashing": "none",
               "sourceMap": false,
