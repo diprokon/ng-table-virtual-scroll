@@ -21,10 +21,10 @@ export class AppComponent {
       path: 'api',
       label: 'API'
     },
-    // {
-    //   path: 'examples',
-    //   label: 'EXAMPLES'
-    // }
+    {
+      path: 'examples',
+      label: 'EXAMPLES'
+    }
   ];
 
   constructor() {

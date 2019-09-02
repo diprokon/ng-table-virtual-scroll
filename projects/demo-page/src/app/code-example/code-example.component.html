@@ -1,1 +1,35 @@
-<p>code-example works!</p>
+<mat-toolbar class="header">
+  <span>{{title}}</span>
+  <span class="spacer"></span>
+ <button mat-icon-button (click)="panel.toggle()">
+   <mat-icon class="mat-18">code</mat-icon>
+ </button>
+</mat-toolbar>
+
+<mat-accordion class="code">
+  <mat-expansion-panel #panel="matExpansionPanel" class="mat-elevation-z0">
+    <ng-template matExpansionPanelContent>
+      <mat-tab-group>
+        <mat-tab label="HTML">
+          <ng-template matTabContent>
+            <pre [highlight]="example.html"></pre>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="TS">
+          <ng-template matTabContent>
+            <pre [highlight]="example.ts"></pre>
+          </ng-template>
+        </mat-tab>
+        <mat-tab label="CSS">
+          <ng-template matTabContent>
+            <pre [highlight]="example.css"></pre>
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </ng-template>
+  </mat-expansion-panel>
+</mat-accordion>
+
+<div class="content">
+  <ng-template #container></ng-template>
+</div>

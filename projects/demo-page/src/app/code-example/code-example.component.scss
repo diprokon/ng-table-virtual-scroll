@@ -1,0 +1,33 @@
+@import 'helpers';
+
+:host {
+  display: block;
+  margin: 20px 0;
+
+
+  @include mat-elevation(2);
+}
+
+.header {
+  color: rgba(0, 0, 0, .54);
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.code {
+  ::ng-deep .mat-expansion-panel-body {
+    padding: 0;
+  }
+
+  mat-expansion-panel {
+    background: inherit;
+  }
+
+  pre  {
+    margin: 0;
+  }
+}
+
+.content {
+  padding: 30px;
+}

@@ -11,32 +11,25 @@ import { MatListModule } from '@angular/material/list';
 import { NavbarComponent } from './navbar/navbar.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
-import { MatTableModule, MatTabsModule } from '@angular/material';
+import { MatCardModule, MatExpansionModule, MatTableModule, MatTabsModule } from '@angular/material';
 import { OverviewComponent } from './overview/overview.component';
 import { ApiComponent } from './api/api.component';
-import { ExamplesComponent } from './examples/examples.component';
-import { RouterModule, Routes } from '@angular/router';
 import { CodeExampleComponent } from './code-example/code-example.component';
+import { HighlightModule } from 'ngx-highlightjs';
+import typescript from 'highlight.js/lib/languages/typescript';
+import css from 'highlight.js/lib/languages/css';
+import xml from 'highlight.js/lib/languages/xml';
+import { AppRoutingModule } from './app-routing.module';
+import { ExamplesPageComponent } from './examples-page/examples-page.component';
+import { ExamplesModule } from './examples';
 
-const routes: Routes = [
-  {
-    path: 'overview',
-    component: OverviewComponent
-  },
-  {
-    path: 'api',
-    component: ApiComponent
-  },
-  {
-    path: 'examples',
-    component: ExamplesComponent
-  },
-  {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'overview'
-  }
-];
+export function hljsLanguages() {
+  return [
+    {name: 'typescript', func: typescript},
+    {name: 'css', func: css},
+    {name: 'xml', func: xml}
+  ];
+}
 
 @NgModule({
   declarations: [
@@ -44,8 +37,8 @@ const routes: Routes = [
     NavbarComponent,
     OverviewComponent,
     ApiComponent,
-    ExamplesComponent,
-    CodeExampleComponent
+    CodeExampleComponent,
+    ExamplesPageComponent
   ],
   imports: [
     BrowserModule,
@@ -59,7 +52,13 @@ const routes: Routes = [
     MatListModule,
     MatTabsModule,
     MatTableModule,
-    RouterModule.forRoot(routes, {useHash: true})
+    HighlightModule.forRoot({
+      languages: hljsLanguages
+    }),
+    AppRoutingModule,
+    ExamplesModule,
+    MatCardModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
