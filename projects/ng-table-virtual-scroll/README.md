@@ -1,24 +1,89 @@
-# NgTableVirtualScroll
+# Virtual Scroll for Angular Material Table
 
-This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.1.3.
+An Angular Directive, which allow to use [virtual scrolling](https://material.angular.io/cdk/scrolling) in [mat-table](https://material.angular.io/components/table)
 
-## Code scaffolding
+[![npm](https://img.shields.io/badge/demo-online-ed1c46.svg)](https://diprokon.github.io/ng-table-virtual-scroll)
+[![npm](https://img.shields.io/npm/v/ng-table-virtual-scroll.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/ng-table-virtual-scroll)
+[![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000)](/LICENSE.txt)
 
-Run `ng generate component component-name --project ngTableVirtualScroll` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngTableVirtualScroll`.
-> Note: Don't forget to add `--project ngTableVirtualScroll` or else it will be added to the default project in your `angular.json` file. 
+## Table of Contents
 
-## Build
+- [Live Demo](https://diprokon.github.io/ng-table-virtual-scroll)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Development](#development)
+- [Issues](#issues)
 
-Run `ng build ngTableVirtualScroll` to build the project. The build artifacts will be stored in the `dist/` directory.
+<a name="installation"/>
 
-## Publishing
+## Installation
 
-After building your library with `ng build ngTableVirtualScroll`, go to the dist folder `cd dist/ng-table-virtual-scroll` and run `npm publish`.
+**NPM**
 
-## Running unit tests
+```bash
+$ npm install -save ng-table-virtual-scroll
+```
 
-Run `ng test ngTableVirtualScroll` to execute the unit tests via [Karma](https://karma-runner.github.io).
+<a name="usage"/>
 
-## Further help
+## Usage
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+### Import `TableVirtualScrollModule`
+
+```ts
+import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
+
+@NgModule({
+  imports: [
+    // ...
+    TableVirtualScrollModule
+  ]
+})
+export class AppModule { }
+```
+
+### Configure the table
+
+#### Data Source
+
+The `TableVirtualScrollDataSource` extends the [`MatTableDataSource`](https://material.angular.io/components/table/api#MatTableDataSource) and must be 
+used as the data source for the `mat-table`
+
+**Note: without `TableVirtualScrollDataSource` the directive won't work**
+
+```ts
+import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
+
+@Component({...})
+export class MyComponent {
+
+  dataSource = new TableVirtualScrollDataSource();
+
+}
+```
+
+#### Directive
+
+```html
+<cdk-virtual-scroll-viewport tvsItemSize headerHeight="56" rowHeight="48" style="height: 400px;">
+    <table mat-table [dataSource]="dataSource">
+    ...
+    </table>
+</cdk-virtual-scroll-viewport>
+```
+
+Make sure, you set the height to the `<cdk-virtual-scroll-viewport>` container
+
+<a name="development"/>
+
+## Development
+
+This project uses Angular CLI to build the package.
+
+```bash
+$ ng build ng-table-virtual-scroll --prod
+```
+
+## Issues
+
+If you identify any errors in the library, or have an idea for an improvement, please open an [issue](https://github.com/diprokon/ng-table-virtual-scroll/issues).

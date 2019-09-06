@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "ngTableVirtualScroll": {
+    "ng-table-virtual-scroll": {
       "projectType": "library",
       "root": "projects/ng-table-virtual-scroll",
       "sourceRoot": "projects/ng-table-virtual-scroll/src",
@@ -156,7 +156,7 @@
       }
     }
   },
-  "defaultProject": "ngTableVirtualScroll",
+  "defaultProject": "ng-table-virtual-scroll",
   "schematics": {
     "@schematics/angular:component": {
       "styleext": "scss"

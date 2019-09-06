@@ -1,6 +1,27 @@
 {
-  "name": "ng-virtual-scroll",
-  "version": "0.0.0",
+  "name": "ng-table-virtual-scroll",
+  "version": "1.0.0",
+  "description": "Virtual scroll for for Angular Material Table",
+  "homepage": "https://github.com/diprokon/ng-table-virtual-scroll",
+  "author": {
+    "name": "Dmytro Prokhorov",
+    "url": "https://github.com/diprokon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/diprokon/ng-table-virtual-scroll.git"
+  },
+  "bugs": {
+    "url": "https://github.com/diprokon/ng-table-virtual-scroll/issues"
+  },
+  "keywords": [
+    "angular",
+    "material",
+    "scroll",
+    "virtual scroll",
+    "table"
+  ],
+  "license": "MIT",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -8,7 +29,9 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "lib:watch": "ng build ngTableVirtualScroll --watch"
+    "start:lib": "ng build ng-table-virtual-scroll --watch",
+    "build:lib": "ng build ng-table-virtual-scroll",
+    "publish:lib": "npm publish dist/ng-table-virtual-scroll"
   },
   "private": true,
   "dependencies": {
