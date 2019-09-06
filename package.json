@@ -29,6 +29,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
+    "build:demo": "ng build demo-page --prod",
     "start:lib": "ng build ng-table-virtual-scroll --watch",
     "build:lib": "ng build ng-table-virtual-scroll",
     "publish:lib": "npm publish dist/ng-table-virtual-scroll"
