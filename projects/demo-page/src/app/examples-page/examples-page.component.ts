@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { examples } from '../examples';
 
 
@@ -7,15 +7,11 @@ import { examples } from '../examples';
   templateUrl: './examples-page.component.html',
   styleUrls: ['./examples-page.component.scss']
 })
-export class ExamplesPageComponent implements OnInit {
+export class ExamplesPageComponent {
 
-  baseExample = examples.base;
+  examples = examples;
 
   constructor() {
-  }
-
-  ngOnInit() {
-
   }
 
 }

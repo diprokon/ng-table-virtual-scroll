@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BaseExampleComponent } from './base-example/base-example.component';
+import { MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSortModule, MatTableModule } from '@angular/material';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
+import { FilterSortSelectExampleComponent } from './filter-sort-select-example/filter-sort-select-example.component';
 
 const examples = [
-  BaseExampleComponent
+  BaseExampleComponent,
+  FilterSortSelectExampleComponent
 ];
 
 @NgModule({
@@ -11,7 +16,14 @@ const examples = [
     ...examples
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatTableModule,
+    ScrollingModule,
+    TableVirtualScrollModule,
+    MatCheckboxModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatSortModule
   ],
   exports: [
     ...examples
@@ -20,4 +32,5 @@ const examples = [
     ...examples
   ]
 })
-export class ExamplesModule { }
+export class ExamplesModule {
+}

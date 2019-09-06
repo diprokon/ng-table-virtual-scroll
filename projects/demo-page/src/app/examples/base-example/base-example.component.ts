@@ -1,15 +1,18 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
+import { getData } from '../utils';
+
+const DATA = getData(1000);
 
 @Component({
   selector: 'app-base-example',
   templateUrl: './base-example.component.html',
   styleUrls: ['./base-example.component.css']
 })
-export class BaseExampleComponent implements OnInit {
+export class BaseExampleComponent {
 
-  constructor() { }
+  displayedColumns = ['id', 'name'];
 
-  ngOnInit() {
-  }
+  dataSource = new TableVirtualScrollDataSource(DATA);
 
 }

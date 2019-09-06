@@ -22,10 +22,10 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
   private alive = true;
 
   @Input()
-  rowHeight = 20;
+  rowHeight = 48;
 
   @Input()
-  headerHeight = 20;
+  headerHeight = 56;
 
   @Input()
   bufferMultiplier = 1.7;

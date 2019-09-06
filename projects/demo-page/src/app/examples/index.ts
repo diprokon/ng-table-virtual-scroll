@@ -1,4 +1,5 @@
 import { BaseExampleComponent } from './base-example/base-example.component';
+import { FilterSortSelectExampleComponent } from './filter-sort-select-example/filter-sort-select-example.component';
 
 export * from './examples.module';
 
@@ -19,5 +20,11 @@ export const examples: Examples = {
     ts: require('!!raw-loader!./base-example/base-example.component.ts'),
     html: require('!!raw-loader!./base-example/base-example.component.html'),
     css: require('!!raw-loader!./base-example/base-example.component.css')
+  },
+  filterSortSelect: {
+    component: FilterSortSelectExampleComponent,
+    ts: require('!!raw-loader!./filter-sort-select-example/filter-sort-select-example.component.ts'),
+    html: require('!!raw-loader!./filter-sort-select-example/filter-sort-select-example.component.html'),
+    css: require('!!raw-loader!./filter-sort-select-example/filter-sort-select-example.component.css')
   }
 };

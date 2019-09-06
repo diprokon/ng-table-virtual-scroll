@@ -4,16 +4,9 @@ import { map, startWith } from 'rxjs/operators';
 import { ListRange } from '@angular/cdk/collections';
 import { MatPaginator, MatSort, MatTableDataSource, PageEvent, Sort } from '@angular/material';
 
-// @ts-ignore: overwriting the MatTableDataSource private properties
+// tslint:disable:variable-name
+// tslint:disable:no-string-literal
 export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
-  private _sort: MatSort | null;
-  private _paginator: MatPaginator | null;
-  private readonly _internalPageChanges = new Subject<void>();
-  private readonly _filter = new BehaviorSubject<string>('');
-  private readonly _data: BehaviorSubject<T[]>;
-  private readonly _renderData = new BehaviorSubject<T[]>([]);
-
-
   get viewport(): CdkVirtualScrollViewport {
     return this._viewport;
   }
@@ -26,18 +19,24 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
   private _viewport: CdkVirtualScrollViewport;
 
   _updateChangeSubscription() {
-    const sortChange: Observable<Sort | null | void> = this._sort ?
-      merge(this._sort.sortChange, this._sort.initialized) as Observable<Sort | void> :
+    const _sort: MatSort | null = this['_sort'];
+    const _paginator: MatPaginator | null = this['_paginator'];
+    const _internalPageChanges: Subject<void> = this['_internalPageChanges'];
+    const _filter: BehaviorSubject<string> = this['_filter'];
+    const _renderData: BehaviorSubject<T[]> = this['_renderData'];
+
+    const sortChange: Observable<Sort | null | void> = _sort ?
+      merge(_sort.sortChange, _sort.initialized) as Observable<Sort | void> :
       of(null);
-    const pageChange: Observable<PageEvent | null | void> = this._paginator ?
+    const pageChange: Observable<PageEvent | null | void> = _paginator ?
       merge(
-        this._paginator.page,
-        this._internalPageChanges,
-        this._paginator.initialized
+        _paginator.page,
+        _internalPageChanges,
+        _paginator.initialized
       ) as Observable<PageEvent | void> :
       of(null);
-    const dataStream = this._data;
-    const filteredData = combineLatest([dataStream, this._filter])
+    const dataStream: Observable<T[]> = this['_data'];
+    const filteredData = combineLatest([dataStream, _filter])
       .pipe(map(([data]) => this._filterData(data)));
     const orderedData = combineLatest([filteredData, sortChange])
       .pipe(map(([data]) => this._orderData(data)));
@@ -53,6 +52,6 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
           );
 
     this._renderChangesSubscription.unsubscribe();
-    this._renderChangesSubscription = sliced.subscribe(data => this._renderData.next(data));
+    this._renderChangesSubscription = sliced.subscribe(data => _renderData.next(data));
   }
 }
