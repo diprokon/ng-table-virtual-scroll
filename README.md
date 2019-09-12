@@ -4,6 +4,7 @@ An Angular Directive, which allow to use [virtual scrolling](https://material.an
 
 [![npm](https://img.shields.io/badge/demo-online-ed1c46.svg)](https://diprokon.github.io/ng-table-virtual-scroll)
 [![npm](https://img.shields.io/npm/v/ng-table-virtual-scroll.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/ng-table-virtual-scroll)
+![Travis (.org) branch](https://img.shields.io/travis/diprokon/ng-table-virtual-scroll/master)
 [![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000)](/LICENSE.txt)
 
 ## Table of Contents
