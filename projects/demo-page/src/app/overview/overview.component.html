@@ -1,22 +1,29 @@
 <p>
-  The <code>ng-table-virtual-scroll</code> package provides opportunity to use <a>Angular Material </a>
-  <code>cdk-virtual-scroll-viewport</code> with <code>mat-table</code>
+  The <code>ng-table-virtual-scroll</code> package provides an opportunity to use <a href="https://material.angular.io" target="_blank">Angular Material </a>
+  <a href="https://material.angular.io/cdk/scrolling" target="_blank"><code>cdk-virtual-scroll-viewport</code></a> with
+  <a href="https://material.angular.io/components/table" target="_blank"><code>mat-table</code></a>
 </p>
 
 <h3>tvsItemSize directive</h3>
 
 <p>
-  When all items are the same fixed size, you can use the FixedSizeTableVirtualScrollStrategy.
-  This can be easily added to your viewport using the <code>tvsItemSize</code> directive.
-  The advantage of this constraint is that it allows for better performance, since items do not need to be measured as they are rendered.
+  When all rows of the table are the same fixed size, you can wrap your <code>table[mat-table]</code> with <code>cdk-virtual-scroll-viewport</code>
+  container and add the <code>tvsItemSize</code> directive on it.
 </p>
 
-<h4>bufferMultiplier</h4>
+<p>
+  To add come configuration, you can add additional properties:
+  <br>
+  <code>tvsItemSize</code> - the row height in px (default: 48)
+  <br>
+  <code>headerHeight</code> - the header row height in px (default: 56)
+  <br>
+  <code>bufferMultiplier</code> - the size of rendered buffer (default: 0.7). The '<code>bufferMultiplier * visibleRowsCount</code>'
+  number of rows will be rendered before and after visible part of the table
+</p>
 
 <p>
-  The fixed size strategy also supports setting a buffer parameter that determine how much extra content is
-  rendered beyond what is visible in the viewport.
-  The <code>bufferMultiplier</code> TODO
+  Don't forget to set height on the <code>cdk-virtual-scroll-viewport</code>
 </p>
 
 <h3>VirtualTableDataSource</h3>

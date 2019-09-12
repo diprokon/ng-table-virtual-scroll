@@ -32,6 +32,16 @@
   <tr>
     <td class="prop-name">
       <div class="input">@Input()</div>
+      <code>tvsItemSize: number;</code>
+    </td>
+    <td class="prop-desc">
+      The size of the row in the table (in pixels).
+      Defaults to 48px.
+    </td>
+  </tr>
+  <tr>
+    <td class="prop-name">
+      <div class="input">@Input()</div>
       <code>headerHeight: number;</code>
     </td>
     <td class="prop-desc">
@@ -42,22 +52,11 @@
   <tr>
     <td class="prop-name">
       <div class="input">@Input()</div>
-      <code>rowHeight: number;</code>
-    </td>
-    <td class="prop-desc">
-      The size of the row in the table (in pixels).
-      Defaults to 48px.
-    </td>
-  </tr>
-  <tr>
-    <td class="prop-name">
-      <div class="input">@Input()</div>
       <code>bufferMultiplier: number;</code>
     </td>
     <td class="prop-desc">
-      The amount of buffer rendered beyond the viewport will be equal to the size of the table
-      '<code>bufferMultiplier</code>' times;
-      Defaults to 1.7.
+      The '<code>bufferMultiplier * visibleRowsCount</code>' number of rows will be rendered before and after visible part of the table.
+      Defaults to 0.7.
     </td>
   </tr>
   </tbody>
@@ -69,7 +68,7 @@
   <code>TableVirtualScrollDataSource</code>
   <span class="extends">
     extends
-    <a class="class-name" href="https://material.angular.io/components/table/api#MatTableDataSource">
+    <a class="class-name" href="https://material.angular.io/components/table/api#MatTableDataSource" target="_blank">
       MatTableDataSource
     </a>
   </span>

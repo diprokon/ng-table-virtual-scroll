@@ -77,11 +77,11 @@ Make sure, you set the height to the `<cdk-virtual-scroll-viewport>` container
 
 Also, you can provide additional properties:
 
-`rowHeight` -> the row height in px (default: 48)
+`tvsItemSize` -> the row height in px (default: 48)
 
 `headerHeight` -> the header row height in px (default: 56)
 
-`bufferMultiplier` -> the number of pre-rendered rows before and after the table
+`bufferMultiplier` -> the size of rendered buffer. The `bufferMultiplier * visibleRowsCount` number of rows will be rendered before and after visible part of the table.
 
 <a name="development"/>
 
