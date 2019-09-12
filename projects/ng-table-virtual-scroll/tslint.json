@@ -12,6 +12,7 @@
       "element",
       "ng-tvs",
       "kebab-case"
-    ]
+    ],
+    "no-string-literal": false
   }
 }

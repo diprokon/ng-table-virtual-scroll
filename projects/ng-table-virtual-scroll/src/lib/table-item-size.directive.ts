@@ -16,7 +16,6 @@ const defaults = {
   bufferMultiplier: 0.7
 };
 
-// tslint:disable:no-string-literal
 @Directive({
   selector: 'cdk-virtual-scroll-viewport[tvsItemSize]',
   providers: [{

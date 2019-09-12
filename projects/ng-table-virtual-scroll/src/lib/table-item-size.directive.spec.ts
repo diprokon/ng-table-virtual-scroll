@@ -8,63 +8,6 @@ import { TableVirtualScrollModule } from './table-virtual-scroll.module';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { animationFrameScheduler } from 'rxjs';
 
-describe('TableItemSizeDirective', () => {
-  let fixture: ComponentFixture<TableVirtualScrollComponent>;
-  let testComponent: TableVirtualScrollComponent;
-  let viewport: CdkVirtualScrollViewport;
-  let strategy: FixedSizeTableVirtualScrollStrategy;
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [ScrollingModule, MatTableModule, TableVirtualScrollModule],
-      declarations: [TableVirtualScrollComponent]
-    }).compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(TableVirtualScrollComponent);
-    testComponent = fixture.componentInstance;
-    viewport = testComponent.viewport;
-    strategy = testComponent.directive.scrollStrategy;
-  });
-
-  it('should create an instance', () => {
-    const directive = new TableItemSizeDirective();
-    expect(directive).toBeTruthy();
-  });
-
-  it('should init correct state', fakeAsync(() => {
-    finishInit(fixture);
-
-    const tbody = fixture.nativeElement.querySelector('tbody');
-
-    expect(tbody.children.length)
-      .toBe(6, 'should render 6 10px row to fill 40px*(1 + 0.5) space');
-  }));
-
-  it('get the rendered range', fakeAsync(() => {
-    finishInit(fixture);
-
-    expect(viewport.getRenderedRange())
-      .toEqual({start: 0, end: 6}, 'should render the first 6 10px items to fill 40px*(1 + 0.5) space');
-  }));
-
-  it('should set the correct rendered range on scroll', fakeAsync(() => {
-    finishInit(fixture);
-
-    viewport.scrollToOffset(100);
-
-    dispatchFakeEvent(viewport.elementRef.nativeElement, 'scroll');
-    animationFrameScheduler.flush();
-    fixture.detectChanges();
-    flush();
-
-    expect(viewport.getRenderedRange())
-      .toEqual({start: 6, end: 14}, 'current index should be 8, buffer = 2');
-  }));
-});
-
-
 @Component({
   template: `
       <cdk-virtual-scroll-viewport tvsItemSize="10"
@@ -160,3 +103,60 @@ export function createFakeEvent(type: string, canBubble = false, cancelable = tr
   event.initEvent(type, canBubble, cancelable);
   return event;
 }
+
+
+describe('TableItemSizeDirective', () => {
+  let fixture: ComponentFixture<TableVirtualScrollComponent>;
+  let testComponent: TableVirtualScrollComponent;
+  let viewport: CdkVirtualScrollViewport;
+  let strategy: FixedSizeTableVirtualScrollStrategy;
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      imports: [ScrollingModule, MatTableModule, TableVirtualScrollModule],
+      declarations: [TableVirtualScrollComponent]
+    }).compileComponents();
+  }));
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(TableVirtualScrollComponent);
+    testComponent = fixture.componentInstance;
+    viewport = testComponent.viewport;
+    strategy = testComponent.directive.scrollStrategy;
+  });
+
+  it('should create an instance', () => {
+    const directive = new TableItemSizeDirective();
+    expect(directive).toBeTruthy();
+  });
+
+  it('should init correct state', fakeAsync(() => {
+    finishInit(fixture);
+
+    const tbody = fixture.nativeElement.querySelector('tbody');
+
+    expect(tbody.children.length)
+      .toBe(6, 'should render 6 10px row to fill 40px*(1 + 0.5) space');
+  }));
+
+  it('get the rendered range', fakeAsync(() => {
+    finishInit(fixture);
+
+    expect(viewport.getRenderedRange())
+      .toEqual({start: 0, end: 6}, 'should render the first 6 10px items to fill 40px*(1 + 0.5) space');
+  }));
+
+  it('should set the correct rendered range on scroll', fakeAsync(() => {
+    finishInit(fixture);
+
+    viewport.scrollToOffset(100);
+
+    dispatchFakeEvent(viewport.elementRef.nativeElement, 'scroll');
+    animationFrameScheduler.flush();
+    fixture.detectChanges();
+    flush();
+
+    expect(viewport.getRenderedRange())
+      .toEqual({start: 6, end: 14}, 'current index should be 8, buffer = 2');
+  }));
+});

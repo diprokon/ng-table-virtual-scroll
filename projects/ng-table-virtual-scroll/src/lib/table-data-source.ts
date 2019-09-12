@@ -3,8 +3,6 @@ import { map } from 'rxjs/operators';
 import { ListRange } from '@angular/cdk/collections';
 import { MatPaginator, MatSort, MatTableDataSource, PageEvent, Sort } from '@angular/material';
 
-// tslint:disable:variable-name
-// tslint:disable:no-string-literal
 export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
   public renderedRangeStream: Subject<ListRange>;
 

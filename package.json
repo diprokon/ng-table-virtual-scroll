@@ -32,7 +32,8 @@
     "build:demo": "ng build demo-page --prod",
     "start:lib": "ng build ng-table-virtual-scroll --watch",
     "build:lib": "ng build ng-table-virtual-scroll && cp README.md dist/ng-table-virtual-scroll/README.md",
-    "publish:lib": "npm publish dist/ng-table-virtual-scroll"
+    "publish:lib": "npm publish dist/ng-table-virtual-scroll",
+    "test-ci": "ng test ng-table-virtual-scroll --watch=false --browsers=ChromeHeadless"
   },
   "private": true,
   "dependencies": {
