@@ -2,9 +2,7 @@
   <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
 </mat-form-field>
 
-<cdk-virtual-scroll-viewport tvsItemSize
-                             headerHeight="56"
-                             rowHeight="48"
+<cdk-virtual-scroll-viewport tvsItemSize="48"
                              class="wrapper mat-elevation-z2">
 
   <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z8">

@@ -10,6 +10,13 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
   return tableDir.scrollStrategy;
 }
 
+const defaults = {
+  rowHeight: 48,
+  headerHeight: 56,
+  bufferMultiplier: 0.7
+};
+
+// tslint:disable:no-string-literal
 @Directive({
   selector: 'cdk-virtual-scroll-viewport[tvsItemSize]',
   providers: [{
@@ -21,14 +28,15 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
 export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestroy {
   private alive = true;
 
-  @Input()
-  rowHeight = 48;
+  // tslint:disable-next-line:no-input-rename
+  @Input('tvsItemSize')
+  rowHeight = defaults.rowHeight;
 
   @Input()
-  headerHeight = 56;
+  headerHeight = defaults.headerHeight;
 
   @Input()
-  bufferMultiplier = 1.7;
+  bufferMultiplier = defaults.bufferMultiplier;
 
   @ContentChild(MatTable, {static: true})
   table: MatTable<any>;
@@ -47,14 +55,7 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
   ngAfterViewInit() {
     if (this.table.dataSource instanceof TableVirtualScrollDataSource) {
       const dataSource = this.table.dataSource;
-      this.scrollStrategy.viewport$
-        .pipe(
-          takeWhile(this.isAlive())
-        )
-        .subscribe((viewport) => {
-          this.viewport = viewport;
-          dataSource.viewport = viewport;
-        });
+      this.scrollStrategy.renderedRangeStream.subscribe(dataSource.renderedRangeStream);
       dataSource.connect()
         .pipe(
           map(() => dataSource.data.length),
@@ -64,6 +65,8 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
         .subscribe((length) => {
           this.scrollStrategy.dataLength = length;
         });
+    } else {
+      throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');
     }
 
     this.scrollStrategy.scrolledIndexChange
@@ -76,10 +79,12 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
   }
 
   ngOnChanges() {
-    this.rowHeight = +this.rowHeight;
-    this.headerHeight = +this.headerHeight;
-    this.bufferMultiplier = + this.bufferMultiplier;
-    this.scrollStrategy.setScrollHeight(this.rowHeight, this.headerHeight, this.bufferMultiplier);
+    const config = {
+      rowHeight: +this.rowHeight || defaults.rowHeight,
+      headerHeight: +this.headerHeight || defaults.headerHeight,
+      bufferMultiplier: +this.bufferMultiplier || defaults.bufferMultiplier
+    };
+    this.scrollStrategy.setConfig(config);
   }
 
 

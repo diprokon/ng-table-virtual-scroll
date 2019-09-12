@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { CdkVirtualScrollViewport, VirtualScrollStrategy } from '@angular/cdk/scrolling';
+import { ListRange } from '@angular/cdk/collections';
 
 @Injectable()
 export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrategy {
@@ -13,8 +14,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
   public viewport: CdkVirtualScrollViewport;
 
-  private _viewport$ = new Subject<CdkVirtualScrollViewport>();
-  viewport$ = this._viewport$.asObservable();
+  public renderedRangeStream = new Subject<ListRange>();
 
   public scrolledIndexChange = this.indexChange.pipe(distinctUntilChanged());
 
@@ -29,15 +29,11 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
   private _dataLength = 0;
 
-  constructor() {
-  }
-
   public attach(viewport: CdkVirtualScrollViewport): void {
     this.viewport = viewport;
+    this.viewport.renderedRangeStream.subscribe(this.renderedRangeStream);
     this.onDataLengthChanged();
     this.updateContent();
-    this._viewport$.next(viewport);
-    this._viewport$.complete();
   }
 
   public detach(): void {
@@ -66,7 +62,10 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     // no-op
   }
 
-  public setScrollHeight(rowHeight: number, headerHeight: number, bufferMultiplier: number) {
+  public setConfig({rowHeight, headerHeight, bufferMultiplier}: { rowHeight: number, headerHeight: number, bufferMultiplier: number }) {
+    if (this.rowHeight === rowHeight || this.headerHeight === headerHeight || this.bufferMultiplier === bufferMultiplier) {
+      return;
+    }
     this.rowHeight = rowHeight;
     this.headerHeight = headerHeight;
     this.bufferMultiplier = bufferMultiplier;
@@ -74,12 +73,12 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   }
 
   private updateContent() {
-    if (!this.viewport) {
+    if (!this.viewport || !this.rowHeight) {
       return;
     }
 
     const amount = Math.ceil(this.viewport.getViewportSize() / this.rowHeight);
-    const offset = this.viewport.measureScrollOffset() - this.headerHeight;
+    const offset = Math.max(this.viewport.measureScrollOffset() - this.headerHeight, 0);
     const buffer = Math.ceil(amount * this.bufferMultiplier);
 
     const skip = Math.round(offset / this.rowHeight);

@@ -63,6 +63,7 @@ export class MyComponent {
 ```
 
 #### Directive
+The `tvsItemSize` directive makes the magic
 
 ```html
 <cdk-virtual-scroll-viewport tvsItemSize headerHeight="56" rowHeight="48" style="height: 400px;">
@@ -74,6 +75,14 @@ export class MyComponent {
 
 Make sure, you set the height to the `<cdk-virtual-scroll-viewport>` container
 
+Also, you can provide additional properties:
+
+`rowHeight` -> the row height in px (default: 48)
+
+`headerHeight` -> the header row height in px (default: 56)
+
+`bufferMultiplier` -> the number of pre-rendered rows before and after the table
+
 <a name="development"/>
 
 ## Development
@@ -81,7 +90,7 @@ Make sure, you set the height to the `<cdk-virtual-scroll-viewport>` container
 This project uses Angular CLI to build the package.
 
 ```bash
-$ ng build ng-table-virtual-scroll --prod
+$ npm run build:lib ng-table-virtual-scroll
 ```
 
 ## Issues

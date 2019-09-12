@@ -50,7 +50,9 @@
           "options": {
             "outputPath": "docs",
             "stylePreprocessorOptions": {
-              "includePaths": ["projects/demo-page/src/styles"]
+              "includePaths": [
+                "projects/demo-page/src/styles"
+              ]
             },
             "index": "projects/demo-page/src/index.html",
             "main": "projects/demo-page/src/main.ts",
@@ -111,23 +113,6 @@
             "browserTarget": "demo-page:build"
           }
         },
-        "test": {
-          "builder": "@angular-devkit/build-angular:karma",
-          "options": {
-            "main": "projects/demo-page/src/test.ts",
-            "polyfills": "projects/demo-page/src/polyfills.ts",
-            "tsConfig": "projects/demo-page/tsconfig.spec.json",
-            "karmaConfig": "projects/demo-page/karma.conf.js",
-            "assets": [
-              "projects/demo-page/src/favicon.ico",
-              "projects/demo-page/src/assets"
-            ],
-            "styles": [
-              "projects/demo-page/src/styles.scss"
-            ],
-            "scripts": []
-          }
-        },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
@@ -139,18 +124,6 @@
             "exclude": [
               "**/node_modules/**"
             ]
-          }
-        },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
-          "options": {
-            "protractorConfig": "projects/demo-page/e2e/protractor.conf.js",
-            "devServerTarget": "demo-page:serve"
-          },
-          "configurations": {
-            "production": {
-              "devServerTarget": "demo-page:serve:production"
-            }
           }
         }
       }

@@ -1,24 +1,15 @@
 import { BehaviorSubject, combineLatest, merge, Observable, of, Subject } from 'rxjs';
-import { CdkVirtualScrollViewport } from '@angular/cdk/scrolling';
-import { map, startWith } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { ListRange } from '@angular/cdk/collections';
 import { MatPaginator, MatSort, MatTableDataSource, PageEvent, Sort } from '@angular/material';
 
 // tslint:disable:variable-name
 // tslint:disable:no-string-literal
 export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
-  get viewport(): CdkVirtualScrollViewport {
-    return this._viewport;
-  }
-
-  set viewport(value: CdkVirtualScrollViewport) {
-    this._viewport = value;
-    this._updateChangeSubscription();
-  }
-
-  private _viewport: CdkVirtualScrollViewport;
+  public renderedRangeStream: Subject<ListRange>;
 
   _updateChangeSubscription() {
+    this.initRenderedRangeStream();
     const _sort: MatSort | null = this['_sort'];
     const _paginator: MatPaginator | null = this['_paginator'];
     const _internalPageChanges: Subject<void> = this['_internalPageChanges'];
@@ -43,15 +34,18 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
     const paginatedData = combineLatest([orderedData, pageChange])
       .pipe(map(([data]) => this._pageData(data)));
 
-    const sliced =
-      this._viewport == null
-        ? paginatedData
-        : combineLatest([paginatedData, this._viewport.renderedRangeStream.pipe(startWith({} as ListRange))])
-          .pipe(
-            map(([data, {start, end}]) => start == null || end == null ? data : data.slice(start, end))
-          );
+    const sliced = combineLatest([paginatedData, this.renderedRangeStream.asObservable()])
+      .pipe(
+        map(([data, {start, end}]) => start == null || end == null ? data : data.slice(start, end))
+      );
 
     this._renderChangesSubscription.unsubscribe();
     this._renderChangesSubscription = sliced.subscribe(data => _renderData.next(data));
+  }
+
+  private initRenderedRangeStream() {
+    if (!this.renderedRangeStream) {
+      this.renderedRangeStream = new Subject<ListRange>();
+    }
   }
 }

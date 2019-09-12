@@ -31,7 +31,7 @@
     "e2e": "ng e2e",
     "build:demo": "ng build demo-page --prod",
     "start:lib": "ng build ng-table-virtual-scroll --watch",
-    "build:lib": "ng build ng-table-virtual-scroll",
+    "build:lib": "ng build ng-table-virtual-scroll && cp README.md dist/ng-table-virtual-scroll/README.md",
     "publish:lib": "npm publish dist/ng-table-virtual-scroll"
   },
   "private": true,
