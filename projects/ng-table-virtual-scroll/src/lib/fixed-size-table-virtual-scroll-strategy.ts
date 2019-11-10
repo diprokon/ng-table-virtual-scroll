@@ -10,7 +10,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   private headerHeight!: number;
   private bufferMultiplier!: number;
   private indexChange = new Subject<number>();
-
+  public stickyChange = new Subject<number>();
 
   public viewport: CdkVirtualScrollViewport;
 
@@ -76,17 +76,19 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     if (!this.viewport || !this.rowHeight) {
       return;
     }
-
+    const scrollOffset = this.viewport.measureScrollOffset();
     const amount = Math.ceil(this.viewport.getViewportSize() / this.rowHeight);
-    const offset = Math.max(this.viewport.measureScrollOffset() - this.headerHeight, 0);
+    const offset = Math.max(scrollOffset - this.headerHeight, 0);
     const buffer = Math.ceil(amount * this.bufferMultiplier);
 
     const skip = Math.round(offset / this.rowHeight);
     const index = Math.max(0, skip);
     const start = Math.max(0, index - buffer);
     const end = Math.min(this.dataLength, index + amount + buffer);
-    this.viewport.setRenderedContentOffset(this.rowHeight * start);
+    const renderedOffset = start * this.rowHeight;
+    this.viewport.setRenderedContentOffset(renderedOffset);
     this.viewport.setRenderedRange({start, end});
     this.indexChange.next(index);
+    this.stickyChange.next(renderedOffset);
   }
 }

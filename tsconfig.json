@@ -20,7 +20,7 @@
     ],
     "paths": {
       "ng-table-virtual-scroll": [
-        "dist/ng-table-virtual-scroll"
+        "projects/ng-table-virtual-scroll/src/public-api.ts"
       ]
     }
   },

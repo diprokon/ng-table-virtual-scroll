@@ -1,0 +1,15 @@
+.wrapper {
+  height: 300px;
+  width: 100%;
+  overflow: auto;
+}
+
+table {
+  width: 1000px;
+}
+
+th,
+td {
+  width: 100px;
+}
+

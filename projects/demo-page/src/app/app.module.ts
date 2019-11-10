@@ -22,6 +22,7 @@ import xml from 'highlight.js/lib/languages/xml';
 import { AppRoutingModule } from './app-routing.module';
 import { ExamplesPageComponent } from './examples-page/examples-page.component';
 import { ExamplesModule } from './examples';
+import { CommonModule } from '@angular/common';
 
 export function hljsLanguages() {
   return [
@@ -44,6 +45,7 @@ export function hljsLanguages() {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    CommonModule,
     LayoutModule,
     MatToolbarModule,
     MatButtonModule,

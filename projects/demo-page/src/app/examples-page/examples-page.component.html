@@ -1,2 +1,3 @@
-<app-code-example [example]="examples.base" title="Base Example"></app-code-example>
-<app-code-example [example]="examples.filterSortSelect" title="Table with filter, sort and selection"></app-code-example>
+<ng-container *ngFor="let example of examples;">
+  <app-code-example [example]="example" [title]="example.title"></app-code-example>
+</ng-container>

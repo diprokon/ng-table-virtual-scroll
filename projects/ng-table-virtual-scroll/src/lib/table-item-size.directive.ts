@@ -1,6 +1,6 @@
 import { AfterViewInit, ContentChild, Directive, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
-import { CdkVirtualScrollViewport, VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { distinctUntilChanged, map, takeWhile } from 'rxjs/operators';
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { distinctUntilChanged, filter, map, takeWhile } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTable } from '@angular/material';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
@@ -41,7 +41,6 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
   table: MatTable<any>;
 
   scrollStrategy = new FixedSizeTableVirtualScrollStrategy();
-  viewport: CdkVirtualScrollViewport;
 
   ngOnDestroy() {
     this.alive = false;
@@ -49,6 +48,12 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
 
   private isAlive() {
     return () => this.alive;
+  }
+
+  private isStickyEnabled(): boolean {
+    return !!this.scrollStrategy.viewport && (this.table['_headerRowDefs'] as CdkHeaderRowDef[])
+      .map(def => def.sticky)
+      .reduce((prevState, state) => prevState && state, true);
   }
 
   ngAfterViewInit() {
@@ -68,12 +73,13 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
       throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');
     }
 
-    this.scrollStrategy.scrolledIndexChange
+    this.scrollStrategy.stickyChange
       .pipe(
+        filter(() => this.isStickyEnabled()),
         takeWhile(this.isAlive())
       )
-      .subscribe(() => {
-        this.setSticky();
+      .subscribe((stickyOffset) => {
+        this.setSticky(stickyOffset);
       });
   }
 
@@ -87,31 +93,12 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
   }
 
 
-  setSticky() {
-    if (!this.viewport) {
-      return;
-    }
+  setSticky(offset) {
+    const offsetString = `-${offset}px`;
 
-    const stickyState = (this.table['_headerRowDefs'] as CdkHeaderRowDef[])
-      .map(def => def.sticky)
-      .reduce((prevState, state) => prevState && state, true);
-
-    if (stickyState) {
-      const transform = this.getStickyPosition();
-
-      this.viewport.elementRef.nativeElement.querySelectorAll('th')
-        .forEach(el => {
-          el.style.transform = transform;
-        });
-    }
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll('th')
+      .forEach(el => {
+        el.style.top = offsetString;
+      });
   }
-
-  getStickyPosition() {
-    if (!this.viewport['_renderedContentTransform']) {
-      return 'translateY(0px)';
-    }
-    return this.viewport['_renderedContentTransform'].replace(/translateY\((\d+)px\)/, 'translateY(-$1px)');
-
-  }
-
 }

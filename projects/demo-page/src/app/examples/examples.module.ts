@@ -5,10 +5,14 @@ import { MatCheckboxModule, MatFormFieldModule, MatInputModule, MatSortModule, M
 import { ScrollingModule } from '@angular/cdk/scrolling';
 import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 import { FilterSortSelectExampleComponent } from './filter-sort-select-example/filter-sort-select-example.component';
+import { StickyExampleComponent } from './sticky-example/sticky-example.component';
+import { StickyColumnExampleComponent } from './sticky-column-example/sticky-column-example.component';
 
 const examples = [
   BaseExampleComponent,
-  FilterSortSelectExampleComponent
+  FilterSortSelectExampleComponent,
+  StickyExampleComponent,
+  StickyColumnExampleComponent
 ];
 
 @NgModule({
