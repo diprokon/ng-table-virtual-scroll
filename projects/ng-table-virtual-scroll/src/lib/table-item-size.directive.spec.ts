@@ -7,52 +7,53 @@ import { MatTableModule } from '@angular/material';
 import { TableVirtualScrollModule } from './table-virtual-scroll.module';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { animationFrameScheduler } from 'rxjs';
+import { By } from '@angular/platform-browser';
 
 @Component({
   template: `
-      <cdk-virtual-scroll-viewport tvsItemSize="10"
-                                   headerHeight="20"
-                                   bufferMultiplier="0.5"
-                                   class="wrapper">
+    <cdk-virtual-scroll-viewport tvsItemSize="10"
+                                 headerHeight="20"
+                                 bufferMultiplier="0.5"
+                                 class="wrapper">
 
-          <table mat-table [dataSource]="dataSource">
+      <table mat-table [dataSource]="dataSource">
 
-              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
-              <ng-container matColumnDef="id">
-                  <th mat-header-cell *matHeaderCellDef>No.</th>
-                  <td mat-cell *matCellDef="let element">el - {{element.id}}</td>
-              </ng-container>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef>No.</th>
+          <td mat-cell *matCellDef="let element">el - {{element.id}}</td>
+        </ng-container>
 
-          </table>
+      </table>
 
-      </cdk-virtual-scroll-viewport>
+    </cdk-virtual-scroll-viewport>
   `,
   styles: [`
-      .wrapper {
-          height: 40px;
-      }
+    .wrapper {
+      height: 40px;
+    }
 
-      tr {
-          height: auto !important;
-      }
+    tr {
+      height: auto !important;
+    }
 
-      th {
-          height: 20px !important;
-      }
+    th {
+      height: 20px !important;
+    }
 
-      td {
-          height: 10px !important;
-      }
+    td {
+      height: 10px !important;
+    }
 
-      th, td {
-          padding: 0 !important;
-          margin: 0 !important;
-          border-width: 0 !important;
-          border-style: none !important;
-          font-size: 8px;
-      }
+    th, td {
+      padding: 0 !important;
+      margin: 0 !important;
+      border-width: 0 !important;
+      border-style: none !important;
+      font-size: 8px;
+    }
   `],
   encapsulation: ViewEncapsulation.None
 })
@@ -110,6 +111,7 @@ describe('TableItemSizeDirective', () => {
   let testComponent: TableVirtualScrollComponent;
   let viewport: CdkVirtualScrollViewport;
   let strategy: FixedSizeTableVirtualScrollStrategy;
+  let directive: TableItemSizeDirective;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -123,10 +125,11 @@ describe('TableItemSizeDirective', () => {
     testComponent = fixture.componentInstance;
     viewport = testComponent.viewport;
     strategy = testComponent.directive.scrollStrategy;
+    const directiveEl = fixture.debugElement.query(By.directive(TableItemSizeDirective));
+    directive = directiveEl.injector.get(TableItemSizeDirective) as TableItemSizeDirective;
   });
 
   it('should create an instance', () => {
-    const directive = new TableItemSizeDirective();
     expect(directive).toBeTruthy();
   });
 

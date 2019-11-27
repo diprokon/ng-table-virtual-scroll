@@ -1,4 +1,4 @@
-import { AfterViewInit, ContentChild, Directive, forwardRef, Input, OnChanges, OnDestroy } from '@angular/core';
+import { AfterViewInit, ContentChild, Directive, forwardRef, Input, NgZone, OnChanges, OnDestroy } from '@angular/core';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { distinctUntilChanged, filter, map, takeWhile } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
@@ -42,6 +42,9 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
 
   scrollStrategy = new FixedSizeTableVirtualScrollStrategy();
 
+  constructor(private zone: NgZone) {
+  }
+
   ngOnDestroy() {
     this.alive = false;
   }
@@ -59,7 +62,11 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
   ngAfterViewInit() {
     if (this.table.dataSource instanceof TableVirtualScrollDataSource) {
       const dataSource = this.table.dataSource;
-      this.scrollStrategy.renderedRangeStream.subscribe(dataSource.renderedRangeStream);
+      this.scrollStrategy.renderedRangeStream.subscribe(range => {
+        this.zone.run(() => {
+          dataSource.renderedRangeStream.next(range);
+        });
+      });
       dataSource.connect()
         .pipe(
           map(() => dataSource.data.length),
