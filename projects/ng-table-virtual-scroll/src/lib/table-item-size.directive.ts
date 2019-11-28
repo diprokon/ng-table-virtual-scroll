@@ -62,11 +62,15 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
   ngAfterViewInit() {
     if (this.table.dataSource instanceof TableVirtualScrollDataSource) {
       const dataSource = this.table.dataSource;
-      this.scrollStrategy.renderedRangeStream.subscribe(range => {
-        this.zone.run(() => {
-          dataSource.renderedRangeStream.next(range);
+      this.scrollStrategy.renderedRangeStream
+        .pipe(
+          takeWhile(this.isAlive())
+        )
+        .subscribe(range => {
+          this.zone.run(() => {
+            dataSource.renderedRangeStream.next(range);
+          });
         });
-      });
       dataSource.connect()
         .pipe(
           map(() => dataSource.data.length),
