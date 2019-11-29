@@ -1,10 +1,11 @@
-import { AfterViewInit, ContentChild, Directive, forwardRef, Input, NgZone, OnChanges, OnDestroy } from '@angular/core';
+import { AfterContentInit, ContentChild, Directive, forwardRef, Input, NgZone, OnChanges, OnDestroy } from '@angular/core';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { distinctUntilChanged, filter, map, takeWhile } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, takeUntil, takeWhile } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTable } from '@angular/material';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef } from '@angular/cdk/table';
+import { Subject } from 'rxjs';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
@@ -24,7 +25,7 @@ const defaults = {
     deps: [forwardRef(() => TableItemSizeDirective)]
   }]
 })
-export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestroy {
+export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDestroy {
   private alive = true;
 
   // tslint:disable-next-line:no-input-rename
@@ -42,11 +43,14 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
 
   scrollStrategy = new FixedSizeTableVirtualScrollStrategy();
 
+  dataSourceChanges = new Subject<void>();
+
   constructor(private zone: NgZone) {
   }
 
   ngOnDestroy() {
     this.alive = false;
+    this.dataSourceChanges.complete();
   }
 
   private isAlive() {
@@ -59,11 +63,31 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
       .reduce((prevState, state) => prevState && state, true);
   }
 
-  ngAfterViewInit() {
-    if (this.table.dataSource instanceof TableVirtualScrollDataSource) {
-      const dataSource = this.table.dataSource;
+  ngAfterContentInit() {
+    const switchDataSourceOrigin = this.table['_switchDataSource'];
+    this.table['_switchDataSource'] = (dataSource: any) => {
+      switchDataSourceOrigin.call(this.table, dataSource);
+      this.connectDataSource(dataSource);
+    };
+
+    this.connectDataSource(this.table.dataSource);
+
+    this.scrollStrategy.stickyChange
+      .pipe(
+        filter(() => this.isStickyEnabled()),
+        takeWhile(this.isAlive())
+      )
+      .subscribe((stickyOffset) => {
+        this.setSticky(stickyOffset);
+      });
+  }
+
+  connectDataSource(dataSource: any) {
+    this.dataSourceChanges.next();
+    if (dataSource instanceof TableVirtualScrollDataSource) {
       this.scrollStrategy.renderedRangeStream
         .pipe(
+          takeUntil(this.dataSourceChanges),
           takeWhile(this.isAlive())
         )
         .subscribe(range => {
@@ -75,6 +99,7 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
         .pipe(
           map(() => dataSource.data.length),
           distinctUntilChanged(),
+          takeUntil(this.dataSourceChanges),
           takeWhile(this.isAlive())
         )
         .subscribe((length) => {
@@ -83,15 +108,6 @@ export class TableItemSizeDirective implements OnChanges, AfterViewInit, OnDestr
     } else {
       throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');
     }
-
-    this.scrollStrategy.stickyChange
-      .pipe(
-        filter(() => this.isStickyEnabled()),
-        takeWhile(this.isAlive())
-      )
-      .subscribe((stickyOffset) => {
-        this.setSticky(stickyOffset);
-      });
   }
 
   ngOnChanges() {

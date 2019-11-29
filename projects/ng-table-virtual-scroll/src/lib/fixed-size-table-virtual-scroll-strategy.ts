@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { distinctUntilChanged } from 'rxjs/operators';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 import { CdkVirtualScrollViewport, VirtualScrollStrategy } from '@angular/cdk/scrolling';
 import { ListRange } from '@angular/cdk/collections';
 
@@ -14,7 +14,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
   public viewport: CdkVirtualScrollViewport;
 
-  public renderedRangeStream = new Subject<ListRange>();
+  public renderedRangeStream = new BehaviorSubject<ListRange>({start: null, end: null});
 
   public scrolledIndexChange = this.indexChange.pipe(distinctUntilChanged());
 

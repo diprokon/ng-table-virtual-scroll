@@ -67,6 +67,10 @@ class TableVirtualScrollComponent {
   displayedColumns = ['id'];
 
   dataSource = new TableVirtualScrollDataSource(Array(50).fill(0).map((_, i) => ({id: i})));
+
+  changeDataSource() {
+    this.dataSource = new TableVirtualScrollDataSource(Array(50).fill(0).map((_, i) => ({id: i + 50})));
+  }
 }
 
 /** Finish initializing the virtual scroll component at the beginning of a test. */
@@ -93,13 +97,13 @@ function triggerScroll(viewport: CdkVirtualScrollViewport, offset?: number) {
   animationFrameScheduler.flush();
 }
 
-export function dispatchFakeEvent(node: Node | Window, type: string, canBubble?: boolean): Event {
+function dispatchFakeEvent(node: Node | Window, type: string, canBubble?: boolean): Event {
   const event = createFakeEvent(type, canBubble);
   node.dispatchEvent(event);
   return event;
 }
 
-export function createFakeEvent(type: string, canBubble = false, cancelable = true) {
+function createFakeEvent(type: string, canBubble = false, cancelable = true) {
   const event = document.createEvent('Event');
   event.initEvent(type, canBubble, cancelable);
   return event;
@@ -161,5 +165,19 @@ describe('TableItemSizeDirective', () => {
 
     expect(viewport.getRenderedRange())
       .toEqual({start: 6, end: 14}, 'current index should be 8, buffer = 2');
+  }));
+
+  it('should subscribe and rerender after dataSource is changed', fakeAsync(() => {
+    finishInit(fixture);
+    const tbody = fixture.nativeElement.querySelector('tbody');
+
+    expect(tbody.children[0].children[0].innerHTML).toBe('el - 0');
+
+    testComponent.changeDataSource();
+    fixture.detectChanges();
+    flush();
+
+    expect(tbody.children[0].children[0].innerHTML).toBe('el - 50');
+
   }));
 });
