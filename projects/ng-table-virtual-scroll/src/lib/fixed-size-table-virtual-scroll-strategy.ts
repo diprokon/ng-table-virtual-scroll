@@ -9,6 +9,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   private rowHeight!: number;
   private headerHeight!: number;
   private bufferMultiplier!: number;
+  private tableHeight!: number;
   private indexChange = new Subject<number>();
   public stickyChange = new Subject<number>();
 
@@ -62,13 +63,16 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     // no-op
   }
 
-  public setConfig({rowHeight, headerHeight, bufferMultiplier}: { rowHeight: number, headerHeight: number, bufferMultiplier: number }) {
-    if (this.rowHeight === rowHeight || this.headerHeight === headerHeight || this.bufferMultiplier === bufferMultiplier) {
+  public setConfig({rowHeight, headerHeight, bufferMultiplier, tableHeight}: { rowHeight: number, headerHeight: number, 
+    bufferMultiplier: number, tableHeight: number }) {
+    if (this.rowHeight === rowHeight || this.headerHeight === headerHeight ||
+      this.bufferMultiplier === bufferMultiplier || this.tableHeight === tableHeight) {
       return;
     }
     this.rowHeight = rowHeight;
     this.headerHeight = headerHeight;
     this.bufferMultiplier = bufferMultiplier;
+    this.tableHeight = tableHeight;
     this.updateContent();
   }
 
@@ -77,7 +81,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
       return;
     }
     const scrollOffset = this.viewport.measureScrollOffset();
-    const amount = Math.ceil(this.viewport.getViewportSize() / this.rowHeight);
+    const amount = Math.ceil(this.calculateProperViewPortSize() / this.rowHeight);
     const offset = Math.max(scrollOffset - this.headerHeight, 0);
     const buffer = Math.ceil(amount * this.bufferMultiplier);
 
@@ -90,5 +94,19 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     this.viewport.setRenderedRange({start, end});
     this.indexChange.next(index);
     this.stickyChange.next(renderedOffset);
+  }
+
+  private calculateProperViewPortSize(): number {
+    const valueViewPortSize = this.viewport.getViewportSize();
+
+    if (valueViewPortSize > 0) {
+      return valueViewPortSize;
+    }
+
+    if (this.tableHeight === 0) {
+      return this.rowHeight * 3;
+    }
+
+    return this.tableHeight;
   }
 }

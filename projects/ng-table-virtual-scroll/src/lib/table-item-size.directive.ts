@@ -14,7 +14,8 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
 const defaults = {
   rowHeight: 48,
   headerHeight: 56,
-  bufferMultiplier: 0.7
+  bufferMultiplier: 0.7,
+  tableHeight: 0
 };
 
 @Directive({
@@ -37,6 +38,9 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
 
   @Input()
   bufferMultiplier = defaults.bufferMultiplier;
+
+  @Input()
+  tableHeight = defaults.tableHeight;
 
   @ContentChild(MatTable, {static: true})
   table: MatTable<any>;
@@ -114,7 +118,8 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
     const config = {
       rowHeight: +this.rowHeight || defaults.rowHeight,
       headerHeight: +this.headerHeight || defaults.headerHeight,
-      bufferMultiplier: +this.bufferMultiplier || defaults.bufferMultiplier
+      bufferMultiplier: +this.bufferMultiplier || defaults.bufferMultiplier,
+      tableHeight: +this.tableHeight || defaults.tableHeight
     };
     this.scrollStrategy.setConfig(config);
   }
