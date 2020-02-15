@@ -63,12 +63,13 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   }
 
   public setConfig({rowHeight, headerHeight, bufferMultiplier}: { rowHeight: number, headerHeight: number, bufferMultiplier: number }) {
-    if (this.rowHeight === rowHeight || this.headerHeight === headerHeight || this.bufferMultiplier === bufferMultiplier) {
+    if (this.rowHeight === rowHeight && this.headerHeight === headerHeight && this.bufferMultiplier === bufferMultiplier) {
       return;
     }
     this.rowHeight = rowHeight;
     this.headerHeight = headerHeight;
     this.bufferMultiplier = bufferMultiplier;
+    this.onDataLengthChanged();
     this.updateContent();
   }
 
