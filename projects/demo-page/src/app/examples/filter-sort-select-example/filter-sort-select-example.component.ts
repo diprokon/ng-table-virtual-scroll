@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ELEMENT_DATA, PeriodicElement } from '../utils';
 import { SelectionModel } from '@angular/cdk/collections';
-import { MatSort } from '@angular/material';
+import { MatSort } from '@angular/material/sort';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
 
 

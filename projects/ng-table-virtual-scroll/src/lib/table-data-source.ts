@@ -1,7 +1,9 @@
 import { BehaviorSubject, combineLatest, merge, Observable, of, Subject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ListRange } from '@angular/cdk/collections';
-import { MatPaginator, MatSort, MatTableDataSource, PageEvent, Sort } from '@angular/material';
+import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { MatSort, Sort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
   public renderedRangeStream: Subject<ListRange>;
