@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TableVirtualScrollDataSource } from './table-data-source';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { ListRange } from '@angular/cdk/collections';
 
