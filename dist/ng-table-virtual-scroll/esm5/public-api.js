@@ -1,0 +1,8 @@
+/*
+ * Public API Surface of ng-fixed-size-table-virtual-scroll
+ */
+export * from './lib/table-virtual-scroll.module';
+export * from './lib/table-item-size.directive';
+export * from './lib/fixed-size-table-virtual-scroll-strategy';
+export * from './lib/table-data-source';
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHVibGljLWFwaS5qcyIsInNvdXJjZVJvb3QiOiJuZzovL25nLXRhYmxlLXZpcnR1YWwtc2Nyb2xsLyIsInNvdXJjZXMiOlsicHVibGljLWFwaS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTs7R0FFRztBQUVILGNBQWMsbUNBQW1DLENBQUM7QUFDbEQsY0FBYyxpQ0FBaUMsQ0FBQztBQUNoRCxjQUFjLGdEQUFnRCxDQUFDO0FBQy9ELGNBQWMseUJBQXlCLENBQUMiLCJzb3VyY2VzQ29udGVudCI6WyIvKlxuICogUHVibGljIEFQSSBTdXJmYWNlIG9mIG5nLWZpeGVkLXNpemUtdGFibGUtdmlydHVhbC1zY3JvbGxcbiAqL1xuXG5leHBvcnQgKiBmcm9tICcuL2xpYi90YWJsZS12aXJ0dWFsLXNjcm9sbC5tb2R1bGUnO1xuZXhwb3J0ICogZnJvbSAnLi9saWIvdGFibGUtaXRlbS1zaXplLmRpcmVjdGl2ZSc7XG5leHBvcnQgKiBmcm9tICcuL2xpYi9maXhlZC1zaXplLXRhYmxlLXZpcnR1YWwtc2Nyb2xsLXN0cmF0ZWd5JztcbmV4cG9ydCAqIGZyb20gJy4vbGliL3RhYmxlLWRhdGEtc291cmNlJztcbiJdfQ==
