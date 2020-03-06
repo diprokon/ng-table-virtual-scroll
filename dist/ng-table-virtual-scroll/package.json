@@ -1,0 +1,44 @@
+{
+  "name": "ng-table-virtual-scroll",
+  "version": "1.2.3",
+  "description": "Virtual scroll for for Angular Material Table",
+  "homepage": "https://github.com/diprokon/ng-table-virtual-scroll",
+  "author": {
+    "name": "Dmytro Prokhorov",
+    "url": "https://github.com/diprokon"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/diprokon/ng-table-virtual-scroll.git"
+  },
+  "bugs": {
+    "url": "https://github.com/diprokon/ng-table-virtual-scroll/issues"
+  },
+  "keywords": [
+    "angular",
+    "material",
+    "scroll",
+    "virtual scroll",
+    "table"
+  ],
+  "license": "MIT",
+  "peerDependencies": {
+    "@angular/common": ">=6.0.0",
+    "@angular/core": ">=6.0.0",
+    "@angular/cdk": ">=6.0.0",
+    "@angular/material": ">=6.0.0",
+    "tslib": "^1.10.0"
+  },
+  "main": "bundles/ng-table-virtual-scroll.umd.js",
+  "module": "fesm5/ng-table-virtual-scroll.js",
+  "es2015": "fesm2015/ng-table-virtual-scroll.js",
+  "esm5": "esm5/ng-table-virtual-scroll.js",
+  "esm2015": "esm2015/ng-table-virtual-scroll.js",
+  "fesm5": "fesm5/ng-table-virtual-scroll.js",
+  "fesm2015": "fesm2015/ng-table-virtual-scroll.js",
+  "typings": "ng-table-virtual-scroll.d.ts",
+  "sideEffects": false,
+  "scripts": {
+    "prepublishOnly": "node --eval \"console.error('ERROR: Trying to publish a package that has been compiled by Ivy. This is not allowed.\\nPlease delete and rebuild the package, without compiling with Ivy, before attempting to publish.\\n')\" && exit 1"
+  }
+}
