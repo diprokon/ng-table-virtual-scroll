@@ -2,7 +2,7 @@ import { AfterContentInit, ContentChild, Directive, forwardRef, Input, NgZone, O
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
 import { distinctUntilChanged, filter, map, takeUntil, takeWhile } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
-import { MatTable } from '@angular/material';
+import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef } from '@angular/cdk/table';
 import { Subject } from 'rxjs';
