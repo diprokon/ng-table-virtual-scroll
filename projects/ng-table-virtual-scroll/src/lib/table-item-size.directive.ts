@@ -14,6 +14,9 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
 const defaults = {
   rowHeight: 48,
   headerHeight: 56,
+  headerEnabled: true,
+  footerHeight: 48,
+  footerEnabled: false,
   bufferMultiplier: 0.7
 };
 
@@ -33,7 +36,16 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   rowHeight = defaults.rowHeight;
 
   @Input()
+  headerEnabled = defaults.headerEnabled;
+
+  @Input()
   headerHeight = defaults.headerHeight;
+
+  @Input()
+  footerEnabled = defaults.footerEnabled;
+
+  @Input()
+  footerHeight = defaults.footerHeight;
 
   @Input()
   bufferMultiplier = defaults.bufferMultiplier;
@@ -113,7 +125,8 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   ngOnChanges() {
     const config = {
       rowHeight: +this.rowHeight || defaults.rowHeight,
-      headerHeight: +this.headerHeight || defaults.headerHeight,
+      headerHeight: this.headerEnabled ? +this.headerHeight || defaults.headerHeight : 0,
+      footerHeight: this.footerEnabled ? +this.footerHeight || defaults.footerHeight : 0,
       bufferMultiplier: +this.bufferMultiplier || defaults.bufferMultiplier
     };
     this.scrollStrategy.setConfig(config);

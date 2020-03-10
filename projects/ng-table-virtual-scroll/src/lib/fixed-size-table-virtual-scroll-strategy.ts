@@ -4,10 +4,18 @@ import { BehaviorSubject, Subject } from 'rxjs';
 import { CdkVirtualScrollViewport, VirtualScrollStrategy } from '@angular/cdk/scrolling';
 import { ListRange } from '@angular/cdk/collections';
 
+export interface TSVStrategyConfigs {
+  rowHeight: number;
+  headerHeight: number;
+  footerHeight: number;
+  bufferMultiplier: number;
+}
+
 @Injectable()
 export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrategy {
   private rowHeight!: number;
   private headerHeight!: number;
+  private footerHeight!: number;
   private bufferMultiplier!: number;
   private indexChange = new Subject<number>();
   public stickyChange = new Subject<number>();
@@ -46,7 +54,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
   public onDataLengthChanged(): void {
     if (this.viewport) {
-      this.viewport.setTotalContentSize(this.dataLength * this.rowHeight + this.headerHeight);
+      this.viewport.setTotalContentSize(this.dataLength * this.rowHeight + this.headerHeight + this.footerHeight);
     }
   }
 
@@ -62,12 +70,19 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     // no-op
   }
 
-  public setConfig({rowHeight, headerHeight, bufferMultiplier}: { rowHeight: number, headerHeight: number, bufferMultiplier: number }) {
-    if (this.rowHeight === rowHeight && this.headerHeight === headerHeight && this.bufferMultiplier === bufferMultiplier) {
+  public setConfig(configs: TSVStrategyConfigs) {
+    const {rowHeight, headerHeight, footerHeight, bufferMultiplier} = configs;
+    if (
+      this.rowHeight === rowHeight
+      && this.headerHeight === headerHeight
+      && this.footerHeight === footerHeight
+      && this.bufferMultiplier === bufferMultiplier
+    ) {
       return;
     }
     this.rowHeight = rowHeight;
     this.headerHeight = headerHeight;
+    this.footerHeight = footerHeight;
     this.bufferMultiplier = bufferMultiplier;
     this.onDataLengthChanged();
     this.updateContent();

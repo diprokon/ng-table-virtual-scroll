@@ -2,6 +2,7 @@ import { BaseExampleComponent } from './base-example/base-example.component';
 import { FilterSortSelectExampleComponent } from './filter-sort-select-example/filter-sort-select-example.component';
 import { StickyExampleComponent } from './sticky-example/sticky-example.component';
 import { StickyColumnExampleComponent } from './sticky-column-example/sticky-column-example.component';
+import { FooterExampleComponent } from './footer-example/footer-example.component';
 
 export * from './examples.module';
 
@@ -20,6 +21,13 @@ export const examples: Example[] = [
     ts: require('!!raw-loader!./base-example/base-example.component.ts'),
     html: require('!!raw-loader!./base-example/base-example.component.html'),
     css: require('!!raw-loader!./base-example/base-example.component.css')
+  },
+  {
+    title: 'Table with footer',
+    component: FooterExampleComponent,
+    ts: require('!!raw-loader!./footer-example/footer-example.component.ts'),
+    html: require('!!raw-loader!./footer-example/footer-example.component.html'),
+    css: require('!!raw-loader!./footer-example/footer-example.component.css')
   },
   {
     title: 'Table with filter, sort and selection',

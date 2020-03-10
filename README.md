@@ -67,7 +67,7 @@ export class MyComponent {
 The `tvsItemSize` directive makes the magic
 
 ```html
-<cdk-virtual-scroll-viewport tvsItemSize headerHeight="56" rowHeight="48" style="height: 400px;">
+<cdk-virtual-scroll-viewport tvsItemSize="48" headerHeight="56" style="height: 400px;">
     <table mat-table [dataSource]="dataSource">
     ...
     </table>
@@ -81,6 +81,12 @@ Also, you can provide additional properties:
 `tvsItemSize` -> the row height in px (default: 48)
 
 `headerHeight` -> the header row height in px (default: 56)
+
+`footerHeight` -> the footer row height in px (default: 48)
+
+`headerEnabled` -> is the header row in the table (default: true)
+
+`footerEnabled` -> is the footer row in the table (default: false)
 
 `bufferMultiplier` -> the size of rendered buffer. The `bufferMultiplier * visibleRowsCount` number of rows will be rendered before and after visible part of the table.
 

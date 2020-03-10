@@ -7,9 +7,11 @@ import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 import { FilterSortSelectExampleComponent } from './filter-sort-select-example/filter-sort-select-example.component';
 import { StickyExampleComponent } from './sticky-example/sticky-example.component';
 import { StickyColumnExampleComponent } from './sticky-column-example/sticky-column-example.component';
+import { FooterExampleComponent } from './footer-example/footer-example.component';
 
 const examples = [
   BaseExampleComponent,
+  FooterExampleComponent,
   FilterSortSelectExampleComponent,
   StickyExampleComponent,
   StickyColumnExampleComponent
