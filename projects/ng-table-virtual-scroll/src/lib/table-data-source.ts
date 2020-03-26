@@ -4,6 +4,7 @@ import { ListRange } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
+import { isNumber } from 'util';
 
 export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
   public renderedRangeStream: Subject<ListRange>;
@@ -36,7 +37,12 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
 
     const sliced = combineLatest([paginatedData, this.renderedRangeStream.asObservable()])
       .pipe(
-        map(([data, {start, end}]) => start == null || end == null ? data : data.slice(start, end))
+        map(
+          ([
+             data,
+             {start, end}
+           ]) => !isNumber(start) || !isNumber(end) ? data : data.slice(start, end)
+        )
       );
 
     this._renderChangesSubscription.unsubscribe();

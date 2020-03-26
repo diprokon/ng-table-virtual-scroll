@@ -22,7 +22,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
   public viewport: CdkVirtualScrollViewport;
 
-  public renderedRangeStream = new BehaviorSubject<ListRange>({start: null, end: null});
+  public renderedRangeStream = new BehaviorSubject<ListRange>({start: 0, end: 0});
 
   public scrolledIndexChange = this.indexChange.pipe(distinctUntilChanged());
 
@@ -41,7 +41,6 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     this.viewport = viewport;
     this.viewport.renderedRangeStream.subscribe(this.renderedRangeStream);
     this.onDataLengthChanged();
-    this.updateContent();
   }
 
   public detach(): void {
@@ -56,6 +55,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     if (this.viewport) {
       this.viewport.setTotalContentSize(this.dataLength * this.rowHeight + this.headerHeight + this.footerHeight);
     }
+    this.updateContent();
   }
 
   public onContentRendered(): void {
@@ -85,7 +85,6 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     this.footerHeight = footerHeight;
     this.bufferMultiplier = bufferMultiplier;
     this.onDataLengthChanged();
-    this.updateContent();
   }
 
   private updateContent() {
