@@ -1,11 +1,12 @@
 import { AfterContentInit, ContentChild, Directive, forwardRef, Input, NgZone, OnChanges, OnDestroy } from '@angular/core';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { distinctUntilChanged, filter, map, takeUntil, takeWhile } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef } from '@angular/cdk/table';
 import { Subject } from 'rxjs';
+import { isNumber } from 'util';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
@@ -97,25 +98,25 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   connectDataSource(dataSource: any) {
     this.dataSourceChanges.next();
     if (dataSource instanceof TableVirtualScrollDataSource) {
-      this.scrollStrategy.renderedRangeStream
+      dataSource
+        .dataToRender$
         .pipe(
-          takeUntil(this.dataSourceChanges),
-          takeWhile(this.isAlive())
-        )
-        .subscribe(range => {
-          this.zone.run(() => {
-            dataSource.renderedRangeStream.next(range);
-          });
-        });
-      dataSource.connect()
-        .pipe(
-          map(() => dataSource.data.length),
           distinctUntilChanged(),
           takeUntil(this.dataSourceChanges),
-          takeWhile(this.isAlive())
+          takeWhile(this.isAlive()),
+          tap(data => this.scrollStrategy.dataLength = data.length),
+          switchMap(data =>
+            this.scrollStrategy
+              .renderedRangeStream
+              .pipe(
+                map(({start, end}) => !isNumber(start) || !isNumber(end) ? data : data.slice(start, end))
+              )
+          )
         )
-        .subscribe((length) => {
-          this.scrollStrategy.dataLength = length;
+        .subscribe(data => {
+          this.zone.run(() => {
+            dataSource.dataOfRange$.next(data);
+          });
         });
     } else {
       throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');

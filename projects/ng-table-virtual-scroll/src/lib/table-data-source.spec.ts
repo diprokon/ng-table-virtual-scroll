@@ -3,6 +3,7 @@ import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTableDataSource } from '@angular/material/table';
 import { Subject } from 'rxjs';
 import { ListRange } from '@angular/cdk/collections';
+import { map, switchMap } from 'rxjs/operators';
 
 interface TestData {
   index: number;
@@ -29,12 +30,12 @@ describe('TableVirtualScrollDataSource', () => {
     expect(dataSource instanceof MatTableDataSource).toBeTruthy();
   });
 
-  it('should have reaction on rangeStream changes', () => {
+  it('should have reaction on dataOfRange$ changes', () => {
     const testData: TestData[] = getTestData();
     const dataSource: TableVirtualScrollDataSource<TestData> = new TableVirtualScrollDataSource<TestData>(testData);
-    const stream = new Subject<ListRange>();
+    const stream = new Subject<TestData[]>();
 
-    stream.subscribe(dataSource.renderedRangeStream);
+    stream.subscribe(dataSource.dataOfRange$);
 
     const renderData: Subject<TestData[]> = dataSource['_renderData'];
 
@@ -43,8 +44,8 @@ describe('TableVirtualScrollDataSource', () => {
       count++;
     });
 
-    stream.next({start: 0, end: 1});
-    stream.next({start: 0, end: testData.length});
+    stream.next(testData.slice(0, 1));
+    stream.next(testData);
 
     expect(count).toBe(2);
   });
@@ -54,7 +55,15 @@ describe('TableVirtualScrollDataSource', () => {
     const dataSource: TableVirtualScrollDataSource<TestData> = new TableVirtualScrollDataSource<TestData>(testData);
     const stream = new Subject<ListRange>();
 
-    stream.subscribe(dataSource.renderedRangeStream);
+    dataSource.dataToRender$
+      .pipe(
+        switchMap(data => stream
+          .pipe(
+            map(({start, end}) => data.slice(start, end))
+          )
+        )
+      )
+      .subscribe(dataSource.dataOfRange$);
 
     const renderData: Subject<TestData[]> = dataSource['_renderData'];
 

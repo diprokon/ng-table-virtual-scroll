@@ -1,16 +1,16 @@
-import { BehaviorSubject, combineLatest, merge, Observable, of, Subject } from 'rxjs';
+import { BehaviorSubject, combineLatest, merge, Observable, of, ReplaySubject, Subject, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { ListRange } from '@angular/cdk/collections';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort, Sort } from '@angular/material/sort';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
-import { isNumber } from 'util';
 
 export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
-  public renderedRangeStream: Subject<ListRange>;
+  public dataToRender$: Subject<T[]>;
+  public dataOfRange$: Subject<T[]>;
+  private streamsReady: boolean;
 
   _updateChangeSubscription() {
-    this.initRenderedRangeStream();
+    this.initStreams();
     const _sort: MatSort | null = this['_sort'];
     const _paginator: MatPaginator | null = this['_paginator'];
     const _internalPageChanges: Subject<void> = this['_internalPageChanges'];
@@ -35,23 +35,20 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
     const paginatedData = combineLatest([orderedData, pageChange])
       .pipe(map(([data]) => this._pageData(data)));
 
-    const sliced = combineLatest([paginatedData, this.renderedRangeStream.asObservable()])
-      .pipe(
-        map(
-          ([
-             data,
-             {start, end}
-           ]) => !isNumber(start) || !isNumber(end) ? data : data.slice(start, end)
-        )
-      );
-
     this._renderChangesSubscription.unsubscribe();
-    this._renderChangesSubscription = sliced.subscribe(data => _renderData.next(data));
+    this._renderChangesSubscription = new Subscription();
+    this._renderChangesSubscription.add(
+      paginatedData.subscribe(data => this.dataToRender$.next(data))
+    );
+    this._renderChangesSubscription.add(
+      this.dataOfRange$.subscribe(data => _renderData.next(data))
+    );
   }
 
-  private initRenderedRangeStream() {
-    if (!this.renderedRangeStream) {
-      this.renderedRangeStream = new Subject<ListRange>();
+  private initStreams() {
+    if (!this.streamsReady) {
+      this.dataToRender$ = new ReplaySubject<T[]>(1);
+      this.dataOfRange$ = new ReplaySubject<T[]>(1);
     }
   }
 }
