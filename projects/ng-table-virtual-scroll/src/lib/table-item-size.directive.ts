@@ -137,7 +137,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   setSticky(offset) {
     const offsetString = `-${offset}px`;
 
-    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll('th')
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll('.mat-table-sticky')
       .forEach(el => {
         el.style.top = offsetString;
       });
