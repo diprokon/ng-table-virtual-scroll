@@ -109,7 +109,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
             this.scrollStrategy
               .renderedRangeStream
               .pipe(
-                map(({start, end}) => !isNumber(start) || !isNumber(end) ? data : data.slice(start, end))
+                map(({start, end}) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
               )
           )
         )
