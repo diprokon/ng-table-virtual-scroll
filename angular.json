@@ -14,6 +14,11 @@
           "options": {
             "tsConfig": "projects/ng-table-virtual-scroll/tsconfig.lib.json",
             "project": "projects/ng-table-virtual-scroll/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ng-table-virtual-scroll/tsconfig.lib.prod.json"
+            }
           }
         },
         "test": {
@@ -58,7 +63,7 @@
             "main": "projects/demo-page/src/main.ts",
             "polyfills": "projects/demo-page/src/polyfills.ts",
             "tsConfig": "projects/demo-page/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/demo-page/src/favicon.ico",
               "projects/demo-page/src/assets"
@@ -82,7 +87,6 @@
               "sourceMap": false,
               "extractCss": true,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
@@ -91,6 +95,10 @@
                   "type": "initial",
                   "maximumWarning": "2mb",
                   "maximumError": "5mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb"
                 }
               ]
             }
@@ -130,7 +138,7 @@
   "defaultProject": "ng-table-virtual-scroll",
   "schematics": {
     "@schematics/angular:component": {
-      "styleext": "scss"
+      "style": "scss"
     }
   }
 }

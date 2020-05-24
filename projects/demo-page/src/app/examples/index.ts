@@ -11,43 +11,24 @@ export interface Example {
   ts: string;
   html: string;
   css: string;
+  name: string;
   title: string;
+}
+function getExample(title: string, component, name: string): Example {
+  return {
+    title,
+    name,
+    component,
+    ts: require(`!!raw-loader!../examples/${name}/${name}.component.ts`).default,
+    html: require(`!!raw-loader!../examples/${name}/${name}.component.html`).default,
+    css: require(`!!raw-loader!../examples/${name}/${name}.component.css`).default,
+  };
 }
 
 export const examples: Example[] = [
-  {
-    title: 'Base Example',
-    component: BaseExampleComponent,
-    ts: require('!!raw-loader!./base-example/base-example.component.ts'),
-    html: require('!!raw-loader!./base-example/base-example.component.html'),
-    css: require('!!raw-loader!./base-example/base-example.component.css')
-  },
-  {
-    title: 'Table with footer',
-    component: FooterExampleComponent,
-    ts: require('!!raw-loader!./footer-example/footer-example.component.ts'),
-    html: require('!!raw-loader!./footer-example/footer-example.component.html'),
-    css: require('!!raw-loader!./footer-example/footer-example.component.css')
-  },
-  {
-    title: 'Table with filter, sort and selection',
-    component: FilterSortSelectExampleComponent,
-    ts: require('!!raw-loader!./filter-sort-select-example/filter-sort-select-example.component.ts'),
-    html: require('!!raw-loader!./filter-sort-select-example/filter-sort-select-example.component.html'),
-    css: require('!!raw-loader!./filter-sort-select-example/filter-sort-select-example.component.css')
-  },
-  {
-    title: 'Table with sticky header',
-    component: StickyExampleComponent,
-    ts: require('!!raw-loader!./sticky-example/sticky-example.component.ts'),
-    html: require('!!raw-loader!./sticky-example/sticky-example.component.html'),
-    css: require('!!raw-loader!./sticky-example/sticky-example.component.css')
-  },
-  {
-    title: 'Table with sticky column',
-    component: StickyColumnExampleComponent,
-    ts: require('!!raw-loader!./sticky-column-example/sticky-column-example.component.ts'),
-    html: require('!!raw-loader!./sticky-column-example/sticky-column-example.component.html'),
-    css: require('!!raw-loader!./sticky-column-example/sticky-column-example.component.css')
-  }
+  getExample('Base Example', BaseExampleComponent, 'base-example'),
+  getExample('Table with footer', FooterExampleComponent, 'footer-example'),
+  getExample('Table with filter, sort and selection', FilterSortSelectExampleComponent, 'filter-sort-select-example'),
+  getExample('Table with sticky header', StickyExampleComponent, 'sticky-example'),
+  getExample('Table with sticky column', StickyColumnExampleComponent, 'sticky-column-example'),
 ];
