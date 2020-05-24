@@ -6,11 +6,12 @@ import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef } from '@angular/cdk/table';
 import { Subject } from 'rxjs';
-import { isNumber } from 'util';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
 }
+
+const stickySelector = '.mat-table-sticky';
 
 const defaults = {
   rowHeight: 48,
@@ -58,6 +59,8 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
 
   dataSourceChanges = new Subject<void>();
 
+  private stickyPositions: Map<HTMLElement, number>;
+
   constructor(private zone: NgZone) {
   }
 
@@ -88,6 +91,11 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
     this.scrollStrategy.stickyChange
       .pipe(
         filter(() => this.isStickyEnabled()),
+        tap(() => {
+          if (!this.stickyPositions) {
+            this.initStickyPositions();
+          }
+        }),
         takeWhile(this.isAlive())
       )
       .subscribe((stickyOffset) => {
@@ -109,7 +117,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
             this.scrollStrategy
               .renderedRangeStream
               .pipe(
-                map(({start, end}) => !isNumber(start) || !isNumber(end) ? data : data.slice(start, end))
+                map(({start, end}) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
               )
           )
         )
@@ -135,11 +143,25 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
 
 
   setSticky(offset) {
-    const offsetString = `-${offset}px`;
-
-    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll('.mat-table-sticky')
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickySelector)
       .forEach((el: HTMLElement) => {
-        el.style.top = offsetString;
+        const parent = el.parentElement;
+        let baseOffset = 0;
+        if (this.stickyPositions.has(parent)) {
+          baseOffset = this.stickyPositions.get(parent);
+        }
+        el.style.top = `-${-baseOffset + offset}px`;
+      });
+  }
+
+  private initStickyPositions() {
+    this.stickyPositions = new Map<HTMLElement, number>();
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickySelector)
+      .forEach(el => {
+        const parent = el.parentElement;
+        if (!this.stickyPositions.has(parent)) {
+          this.stickyPositions.set(parent, parent.offsetTop);
+        }
       });
   }
 }
