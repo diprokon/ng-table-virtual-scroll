@@ -44,7 +44,9 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   }
 
   public detach(): void {
-    // no-op
+    this.indexChange.complete();
+    this.stickyChange.complete();
+    this.renderedRangeStream.complete();
   }
 
   public onContentScrolled(): void {
@@ -66,8 +68,11 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     // no-op
   }
 
-  public scrollToIndex(index: number, behavior: ScrollBehavior): void {
-    // no-op
+  public scrollToIndex(index: number, behavior?: ScrollBehavior): void {
+    if (!this.viewport || !this.rowHeight) {
+      return;
+    }
+    this.viewport.scrollToOffset((index - 1 ) * this.rowHeight + this.headerHeight);
   }
 
   public setConfig(configs: TSVStrategyConfigs) {
