@@ -11,7 +11,8 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
   return tableDir.scrollStrategy;
 }
 
-const stickySelector = '.mat-table-sticky';
+const stickyHeaderSelector = '.mat-header-row .mat-table-sticky';
+const stickyFooterSelector = '.mat-footer-row .mat-table-sticky';
 
 const defaults = {
   rowHeight: 48,
@@ -143,7 +144,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
 
 
   setSticky(offset) {
-    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickySelector)
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyHeaderSelector)
       .forEach((el: HTMLElement) => {
         const parent = el.parentElement;
         let baseOffset = 0;
@@ -152,11 +153,20 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
         }
         el.style.top = `-${-baseOffset + offset}px`;
       });
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyFooterSelector)
+      .forEach((el: HTMLElement) => {
+        const parent = el.parentElement;
+        let baseOffset = 0;
+        if (this.stickyPositions.has(parent)) {
+          baseOffset = this.stickyPositions.get(parent);
+        }
+        el.style.bottom = `${-baseOffset + offset}px`;
+      });
   }
 
   private initStickyPositions() {
     this.stickyPositions = new Map<HTMLElement, number>();
-    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickySelector)
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyHeaderSelector)
       .forEach(el => {
         const parent = el.parentElement;
         if (!this.stickyPositions.has(parent)) {
