@@ -49,6 +49,7 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
     if (!this.streamsReady) {
       this.dataToRender$ = new ReplaySubject<T[]>(1);
       this.dataOfRange$ = new ReplaySubject<T[]>(1);
+      this.streamsReady = true;
     }
   }
 }
