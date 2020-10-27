@@ -151,7 +151,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
         if (this.stickyPositions.has(parent)) {
           baseOffset = this.stickyPositions.get(parent);
         }
-        el.style.top = `-${-baseOffset + offset}px`;
+        el.style.top = `${baseOffset - offset}px`;
       });
     this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyFooterSelector)
       .forEach((el: HTMLElement) => {
