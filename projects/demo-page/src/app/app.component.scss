@@ -19,6 +19,16 @@
   overflow: auto;
   padding: 20px 290px 50px 260px;
 
+  @media (max-width: 1200px) {
+    padding-left: 10%;
+    padding-right: 10%;
+  }
+
+  @media (max-width: 800px) {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+
   > nav {
     margin-bottom: 30px;
   }
