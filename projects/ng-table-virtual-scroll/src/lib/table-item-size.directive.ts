@@ -53,7 +53,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   @Input()
   bufferMultiplier = defaults.bufferMultiplier;
 
-  @ContentChild(MatTable, {static: true})
+  @ContentChild(MatTable, {static: false})
   table: MatTable<any>;
 
   scrollStrategy = new FixedSizeTableVirtualScrollStrategy();
