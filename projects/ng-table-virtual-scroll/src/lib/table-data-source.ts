@@ -35,7 +35,7 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> {
     const paginatedData = combineLatest([orderedData, pageChange])
       .pipe(map(([data]) => this._pageData(data)));
 
-    this._renderChangesSubscription.unsubscribe();
+    this._renderChangesSubscription?.unsubscribe();
     this._renderChangesSubscription = new Subscription();
     this._renderChangesSubscription.add(
       paginatedData.subscribe(data => this.dataToRender$.next(data))
