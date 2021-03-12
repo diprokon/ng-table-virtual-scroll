@@ -41,7 +41,8 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
   public attach(viewport: CdkVirtualScrollViewport): void {
     this.viewport = viewport;
-    // did know why, there are two observers. And that will cause TableItemSizeDirective::connectDataSource receive two notification for one date changes.
+    // did know why, there are two observers. And that will cause 
+    // TableItemSizeDirective::connectDataSource receive two notification for one date changes.
     // for big and complex mat-table, that will slow down performance.
     // check the observers here to make sure only one observer exist.
     if (this.renderedRangeStream.observers.length > 0) {
