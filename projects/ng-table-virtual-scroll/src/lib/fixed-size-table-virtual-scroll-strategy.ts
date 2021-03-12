@@ -36,9 +36,17 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   }
 
   private _dataLength = 0;
+  private _start = 0;
+  private _end = 0;
 
   public attach(viewport: CdkVirtualScrollViewport): void {
     this.viewport = viewport;
+    // did know why, there are two observers. And that will cause TableItemSizeDirective::connectDataSource receive two notification for one date changes.
+    // for big and complex mat-table, that will slow down performance.
+    // check the observers here to make sure only one observer exist.
+    if (this.renderedRangeStream.observers.length > 0) {
+      this.renderedRangeStream.observers[0].complete();
+    }
     this.viewport.renderedRangeStream.subscribe(this.renderedRangeStream);
     this.onDataLengthChanged();
   }
@@ -103,12 +111,16 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
     const skip = Math.round(offset / this.rowHeight);
     const index = Math.max(0, skip);
-    const start = Math.max(0, index - buffer);
+    const start = 0; //Math.min(0, index - buffer);
     const end = Math.min(this.dataLength, index + amount + buffer);
     const renderedOffset = start * this.rowHeight;
-    this.viewport.setRenderedContentOffset(renderedOffset);
-    this.viewport.setRenderedRange({start, end});
-    this.indexChange.next(index);
-    this.stickyChange.next(renderedOffset);
+    if (start !== this._start || end !== this._end) {
+      this._start = start;
+      this._end = end;
+      this.viewport.setRenderedContentOffset(renderedOffset);
+      this.viewport.setRenderedRange({ start, end });
+      this.indexChange.next(index);
+      this.stickyChange.next(renderedOffset);
+    }
   }
 }
