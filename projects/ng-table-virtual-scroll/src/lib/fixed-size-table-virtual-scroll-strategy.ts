@@ -111,7 +111,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
     const skip = Math.round(offset / this.rowHeight);
     const index = Math.max(0, skip);
-    const start = 0; //Math.min(0, index - buffer);
+    const start = Math.min(0, index - buffer);
     const end = Math.min(this.dataLength, index + amount + buffer);
     const renderedOffset = start * this.rowHeight;
     if (start !== this._start || end !== this._end) {
