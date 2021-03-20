@@ -36,22 +36,22 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
 
   // tslint:disable-next-line:no-input-rename
   @Input('tvsItemSize')
-  rowHeight = defaults.rowHeight;
+  rowHeight: string | number = defaults.rowHeight;
 
   @Input()
-  headerEnabled = defaults.headerEnabled;
+  headerEnabled: boolean = defaults.headerEnabled;
 
   @Input()
-  headerHeight = defaults.headerHeight;
+  headerHeight: string | number = defaults.headerHeight;
 
   @Input()
-  footerEnabled = defaults.footerEnabled;
+  footerEnabled: boolean = defaults.footerEnabled;
 
   @Input()
-  footerHeight = defaults.footerHeight;
+  footerHeight: string | number = defaults.footerHeight;
 
   @Input()
-  bufferMultiplier = defaults.bufferMultiplier;
+  bufferMultiplier: string | number = defaults.bufferMultiplier;
 
   @ContentChild(MatTable, {static: false})
   table: MatTable<any>;
