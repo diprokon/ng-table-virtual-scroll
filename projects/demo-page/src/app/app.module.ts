@@ -18,22 +18,12 @@ import { HttpClientModule } from '@angular/common/http';
 import { OverviewComponent } from './overview/overview.component';
 import { ApiComponent } from './api/api.component';
 import { CodeExampleComponent } from './code-example/code-example.component';
-import { HighlightModule } from 'ngx-highlightjs';
-import typescript from 'highlight.js/lib/languages/typescript';
-import css from 'highlight.js/lib/languages/css';
-import xml from 'highlight.js/lib/languages/xml';
+import { HIGHLIGHT_OPTIONS, HighlightModule } from 'ngx-highlightjs';
 import { AppRoutingModule } from './app-routing.module';
 import { ExamplesPageComponent } from './examples-page/examples-page.component';
 import { ExamplesModule } from './examples';
 import { CommonModule } from '@angular/common';
 
-export function hljsLanguages() {
-  return [
-    {name: 'typescript', func: typescript},
-    {name: 'css', func: css},
-    {name: 'xml', func: xml}
-  ];
-}
 
 @NgModule({
   declarations: [
@@ -57,15 +47,25 @@ export function hljsLanguages() {
     MatListModule,
     MatTabsModule,
     MatTableModule,
-    HighlightModule.forRoot({
-      languages: hljsLanguages
-    }),
+    HighlightModule,
     AppRoutingModule,
     ExamplesModule,
     MatCardModule,
     MatExpansionModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HIGHLIGHT_OPTIONS,
+      useValue: {
+        coreLibraryLoader: () => import('highlight.js/lib/core'),
+        languages: {
+          typescript: () => import('highlight.js/lib/languages/typescript'),
+          css: () => import('highlight.js/lib/languages/css'),
+          xml: () => import('highlight.js/lib/languages/xml')
+        }
+      }
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

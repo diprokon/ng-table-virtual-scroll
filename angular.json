@@ -10,7 +10,7 @@
       "prefix": "tvs",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-ng-packagr:build",
+          "builder": "@angular-devkit/build-angular:ng-packagr",
           "options": {
             "tsConfig": "projects/ng-table-virtual-scroll/tsconfig.lib.json",
             "project": "projects/ng-table-virtual-scroll/ng-package.json"
@@ -85,7 +85,6 @@
               "optimization": true,
               "outputHashing": "none",
               "sourceMap": false,
-              "extractCss": true,
               "namedChunks": false,
               "extractLicenses": true,
               "vendorChunk": false,
