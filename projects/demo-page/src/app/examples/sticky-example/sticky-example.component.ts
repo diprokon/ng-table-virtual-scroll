@@ -1,11 +1,13 @@
 import { Component } from '@angular/core';
 import { TableVirtualScrollDataSource } from 'ng-table-virtual-scroll';
-import { getData } from '../utils';
 
-const DATA = getData(1000);
+const DATA = Array.from({length: 1000}, (v, i) => ({
+  id: i + 1,
+  name: `Element #${i + 1}`
+}));
 
 @Component({
-  selector: 'app-base-example',
+  selector: 'app-sticky-example',
   templateUrl: './sticky-example.component.html',
   styleUrls: ['./sticky-example.component.css']
 })

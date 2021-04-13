@@ -23,6 +23,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { ExamplesPageComponent } from './examples-page/examples-page.component';
 import { ExamplesModule } from './examples';
 import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 
 @NgModule({
@@ -51,7 +53,9 @@ import { CommonModule } from '@angular/common';
     AppRoutingModule,
     ExamplesModule,
     MatCardModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule,
+    MatSnackBarModule,
   ],
   providers: [
     {

@@ -1,15 +1,21 @@
 @import 'helpers';
 
+$foreground: map-get($mat-app-theme, foreground);
+
 :host {
   display: block;
   margin: 20px 0;
-
-
-  @include mat-elevation(2);
+  border-radius: 4px;
+  border: 1px solid rgba(mat-color($foreground, secondary-text), 0.2);
 }
 
 .header {
-  color: rgba(0, 0, 0, .54);
+  color: mat-color($foreground, secondary-text);
+  align-content: center;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  padding: 8px 8px 8px 16px;
   font-size: 16px;
   font-weight: 400;
 
@@ -26,13 +32,25 @@
 
   mat-expansion-panel {
     background: inherit;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
   }
 
   pre  {
+    background: rgba(mat-color($foreground, secondary-text), 0.01);
+    border-bottom: 1px solid mat-color($foreground, divider);
     margin: 0;
   }
 }
 
 .content {
   padding: 30px;
+}
+
+.button-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 8px;
+  color: mat-color($foreground, secondary-text);
 }

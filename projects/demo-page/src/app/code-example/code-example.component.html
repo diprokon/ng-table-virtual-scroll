@@ -1,28 +1,33 @@
-<mat-toolbar class="header">
+<div class="header">
   <span>{{title}}</span>
   <span class="spacer"></span>
- <button mat-icon-button (click)="panel.toggle()">
-   <mat-icon class="mat-18">code</mat-icon>
- </button>
-</mat-toolbar>
+  <button mat-icon-button
+          matTooltip="View code"
+          (click)="panel.toggle()">
+    <mat-icon class="mat-18">code</mat-icon>
+  </button>
+  <button mat-icon-button
+          matTooltip="Edit {{title}} in StackBlitz"
+          (click)="openStackblitz()">
+    <mat-icon class="mat-18">open_in_new</mat-icon>
+  </button>
+</div>
 
 <mat-accordion class="code">
   <mat-expansion-panel #panel="matExpansionPanel" class="mat-elevation-z0">
     <ng-template matExpansionPanelContent>
       <mat-tab-group>
-        <mat-tab label="HTML">
+        <mat-tab *ngFor="let snippet of exampleSnippets"
+                 [label]="snippet.label">
           <ng-template matTabContent>
-            <pre [highlight]="example.html"></pre>
-          </ng-template>
-        </mat-tab>
-        <mat-tab label="TS">
-          <ng-template matTabContent>
-            <pre [highlight]="example.ts"></pre>
-          </ng-template>
-        </mat-tab>
-        <mat-tab label="CSS">
-          <ng-template matTabContent>
-            <pre [highlight]="example.css"></pre>
+            <div class="button-bar">
+              <button mat-icon-button
+                      matTooltip="Copy example source"
+                      (click)="copySource(example[snippet.type] )">
+                <mat-icon>content_copy</mat-icon>
+              </button>
+            </div>
+            <pre [highlight]="example[snippet.type]"></pre>
           </ng-template>
         </mat-tab>
       </mat-tab-group>
