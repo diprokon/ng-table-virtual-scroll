@@ -1,11 +1,20 @@
-import { AfterContentInit, ContentChild, Directive, forwardRef, Input, NgZone, OnChanges, OnDestroy } from '@angular/core';
+import {
+  AfterContentInit,
+  ContentChild,
+  Directive,
+  forwardRef,
+  Input,
+  NgZone,
+  OnChanges,
+  OnDestroy
+} from '@angular/core';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { distinctUntilChanged, filter, map, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { delayWhen, distinctUntilChanged, filter, map, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef } from '@angular/cdk/table';
-import { Subject } from 'rxjs';
+import { of, Subject, timer } from 'rxjs';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
@@ -53,7 +62,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   @Input()
   bufferMultiplier: string | number = defaults.bufferMultiplier;
 
-  @ContentChild(MatTable, {static: false})
+  @ContentChild(MatTable, { static: false })
   table: MatTable<any>;
 
   scrollStrategy = new FixedSizeTableVirtualScrollStrategy();
@@ -92,6 +101,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
     this.scrollStrategy.stickyChange
       .pipe(
         filter(() => this.isStickyEnabled()),
+        delayWhen(() => !this.stickyPositions ? timer(0) : of()),
         tap(() => {
           if (!this.stickyPositions) {
             this.initStickyPositions();
@@ -118,7 +128,10 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
             this.scrollStrategy
               .renderedRangeStream
               .pipe(
-                map(({start, end}) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
+                map(({
+                       start,
+                       end
+                     }) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
               )
           )
         )
@@ -143,7 +156,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   }
 
 
-  setSticky(offset) {
+  setSticky(offset: number) {
     this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyHeaderSelector)
       .forEach((el: HTMLElement) => {
         const parent = el.parentElement;
