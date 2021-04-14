@@ -9,8 +9,12 @@
     <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
 
     <ng-container matColumnDef="id">
-      <td mat-cell *matCellDef="let element">{{element.id}}</td>
-      <td mat-footer-cell *matFooterCellDef>No.</td>
+      <td mat-cell
+          *matCellDef="let element"
+          class="col-sm">{{element.id}}</td>
+      <td mat-footer-cell
+          *matFooterCellDef
+          class="col-sm">No.</td>
     </ng-container>
 
     <ng-container matColumnDef="name">

@@ -4,4 +4,9 @@
 
 table {
   width: 100%;
+  table-layout: fixed;
+}
+
+.col-sm {
+  width: 70px;
 }

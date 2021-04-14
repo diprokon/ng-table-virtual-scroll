@@ -9,14 +9,18 @@
 
     <!-- Checkbox Column -->
     <ng-container matColumnDef="select">
-      <th mat-header-cell *matHeaderCellDef>
+      <th mat-header-cell
+          *matHeaderCellDef
+          class="col-sm">
         <mat-checkbox (change)="$event ? masterToggle() : null"
                       [checked]="selection.hasValue() && isAllSelected()"
                       [indeterminate]="selection.hasValue() && !isAllSelected()"
                       [aria-label]="checkboxLabel()">
         </mat-checkbox>
       </th>
-      <td mat-cell *matCellDef="let row">
+      <td mat-cell
+          *matCellDef="let row"
+          class="col-sm">
         <mat-checkbox (click)="$event.stopPropagation()"
                       (change)="$event ? selection.toggle(row) : null"
                       [checked]="selection.isSelected(row)"
@@ -27,8 +31,13 @@
 
     <!-- Position Column -->
     <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
-      <td mat-cell *matCellDef="let element"> {{element.position}} </td>
+      <th mat-header-cell
+          *matHeaderCellDef
+          mat-sort-header
+          class="col-sm"> No. </th>
+      <td mat-cell
+          *matCellDef="let element"
+          class="col-sm"> {{element.position}} </td>
     </ng-container>
 
     <!-- Name Column -->
