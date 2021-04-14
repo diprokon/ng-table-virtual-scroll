@@ -4,6 +4,35 @@
   <a href="https://material.angular.io/components/table" target="_blank"><code>mat-table</code></a>
 </p>
 
+<h3>Installation</h3>
+
+<p>
+  To install package by <code>npm</code>:
+  <br>
+  <code>$ npm install -save ng-table-virtual-scroll</code>
+</p>
+
+<p>
+  To make it work in your project:
+  <br>
+  1) Import module:
+</p>
+<pre [highlight]="snippets.importModule"></pre>
+<p>
+  <small>
+    <b>Note</b>: Note: you need to install and configure
+    <a href="https://material.angular.io/cdk/scrolling" target="_blank"><code>cdk-virtual-scroll-viewport</code></a> and
+    <a href="https://material.angular.io/components/table" target="_blank"><code>mat-table</code></a> before.
+    <code>TableVirtualScroll</code> only make them work together properly
+  </small>
+</p>
+<p>
+  2) Use <code>tvsItemSize</code> directive on <code>&lt;cdk-virtual-scroll-viewport&gt;</code>
+</p>
+<p>
+  3) Use <code>new VirtualTableDataSource()</code> as <code>[dataSource]</code> of a <code>&lt;table mat-table&gt;</code>
+</p>
+
 <h3>tvsItemSize directive</h3>
 
 <p>

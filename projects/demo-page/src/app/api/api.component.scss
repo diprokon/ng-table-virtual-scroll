@@ -1,5 +1,9 @@
 @import 'helpers';
 
+code {
+  @include code();
+}
+
 .h3-header {
   border-bottom: 1px solid rgba(0, 0, 0, .12);
   font-weight: 300;

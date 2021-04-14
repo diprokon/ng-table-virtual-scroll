@@ -42,7 +42,7 @@ import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 })
 export class AppModule { }
 ```
-**Note: you need to install and configure [virtual scrolling](https://material.angular.io/cdk/scrolling) and [mat-table](https://material.angular.io/components/table) before. TableVirtualScroll only make work them together properly**
+**Note: you need to install and configure [virtual scrolling](https://material.angular.io/cdk/scrolling) and [mat-table](https://material.angular.io/components/table) before. TableVirtualScroll only make them work together properly**
 
 ### Configure the table
 
