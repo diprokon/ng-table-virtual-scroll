@@ -221,5 +221,6 @@ describe('TableItemSizeDirective', () => {
     expect(viewport.elementRef.nativeElement.scrollHeight)
       .toEqual(500, 'height without footer and header is incorrect');
 
+    fixture.destroy();
   }));
 });

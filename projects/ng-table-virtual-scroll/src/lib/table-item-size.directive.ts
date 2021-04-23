@@ -9,7 +9,7 @@ import {
   OnDestroy
 } from '@angular/core';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { delayWhen, distinctUntilChanged, filter, map, switchMap, takeUntil, takeWhile, tap } from 'rxjs/operators';
+import { delayWhen, distinctUntilChanged, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
@@ -41,7 +41,7 @@ const defaults = {
   }]
 })
 export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDestroy {
-  private alive = true;
+  private destroyed$ = new Subject();
 
   // tslint:disable-next-line:no-input-rename
   @Input('tvsItemSize')
@@ -75,12 +75,9 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   }
 
   ngOnDestroy() {
-    this.alive = false;
+    this.destroyed$.next();
+    this.destroyed$.complete();
     this.dataSourceChanges.complete();
-  }
-
-  private isAlive() {
-    return () => this.alive;
   }
 
   private isStickyEnabled(): boolean {
@@ -107,7 +104,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
             this.initStickyPositions();
           }
         }),
-        takeWhile(this.isAlive())
+        takeUntil(this.destroyed$)
       )
       .subscribe((stickyOffset) => {
         this.setSticky(stickyOffset);
@@ -122,7 +119,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
         .pipe(
           distinctUntilChanged(),
           takeUntil(this.dataSourceChanges),
-          takeWhile(this.isAlive()),
+          takeUntil(this.destroyed$),
           tap(data => this.scrollStrategy.dataLength = data.length),
           switchMap(data =>
             this.scrollStrategy
