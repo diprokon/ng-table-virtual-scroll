@@ -61,7 +61,6 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   }
 
   public onContentRendered(): void {
-    // no-op
   }
 
   public onRenderedOffsetChanged(): void {
@@ -96,19 +95,39 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     if (!this.viewport || !this.rowHeight) {
       return;
     }
-    const scrollOffset = this.viewport.measureScrollOffset();
-    const amount = Math.ceil(this.viewport.getViewportSize() / this.rowHeight);
-    const offset = Math.max(scrollOffset - this.headerHeight, 0);
-    const buffer = Math.ceil(amount * this.bufferMultiplier);
 
-    const skip = Math.round(offset / this.rowHeight);
-    const index = Math.max(0, skip);
-    const start = Math.max(0, index - buffer);
-    const end = Math.min(this.dataLength, index + amount + buffer);
-    const renderedOffset = start * this.rowHeight;
-    this.viewport.setRenderedContentOffset(renderedOffset);
-    this.viewport.setRenderedRange({start, end});
-    this.indexChange.next(index);
-    this.stickyChange.next(renderedOffset);
+    const renderedOffset = this.viewport.getOffsetToRenderedContentStart();
+    const start = renderedOffset / this.rowHeight;
+    const amount = Math.ceil(this.viewport.getViewportSize() / this.rowHeight);
+    const buffer = Math.ceil(amount * this.bufferMultiplier);
+    const end = start + amount + buffer;
+
+
+    const lowerBuffer = Math.min(buffer, start);
+    const bufferOffset = renderedOffset + lowerBuffer * this.rowHeight;
+    const scrollOffset = this.viewport.measureScrollOffset();
+
+    // How far the scroll offset is from the actual start of displayed information
+    const relativeScrollOffset = scrollOffset - bufferOffset;
+    const rowsScrolled = relativeScrollOffset / this.rowHeight;
+
+    // Only bother updating the displayed information if we've scrolled more than a row
+    const rowSensitivity = 1.0;
+    if (Math.abs(rowsScrolled) < rowSensitivity) {
+      this.viewport.setRenderedContentOffset(renderedOffset);
+      this.viewport.setRenderedRange({start, end});
+      return;
+    }
+
+    const rowsToMove = Math.sign(rowsScrolled) * Math.floor(Math.abs(rowsScrolled));
+    const adjustedRenderedOffset = renderedOffset + rowsToMove * this.rowHeight;
+    this.viewport.setRenderedContentOffset(adjustedRenderedOffset);
+
+    const adjustedStart = Math.max(0, start + rowsToMove);
+    const adjustedEnd = adjustedStart + amount + buffer;
+    this.viewport.setRenderedRange({start: adjustedStart, end: adjustedEnd});
+
+    this.indexChange.next(adjustedStart - lowerBuffer);
+    this.stickyChange.next(adjustedRenderedOffset);
   }
 }
