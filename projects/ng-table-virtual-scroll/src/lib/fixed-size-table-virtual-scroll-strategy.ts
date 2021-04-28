@@ -102,6 +102,8 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     const buffer = Math.ceil(amount * this.bufferMultiplier);
     const end = start + amount + buffer;
 
+    console.log(`Initial offset and range ${JSON.stringify({renderedOffset, start, end})}`);
+
 
     const lowerBuffer = Math.min(buffer, start);
     const bufferOffset = renderedOffset + lowerBuffer * this.rowHeight;
@@ -113,6 +115,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
     // Only bother updating the displayed information if we've scrolled more than a row
     const rowSensitivity = 1.0;
+    console.log(`Rows scrolled: ${rowsScrolled}`);
     if (Math.abs(rowsScrolled) < rowSensitivity) {
       this.viewport.setRenderedContentOffset(renderedOffset);
       this.viewport.setRenderedRange({start, end});
@@ -120,7 +123,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     }
 
     const rowsToMove = Math.sign(rowsScrolled) * Math.floor(Math.abs(rowsScrolled));
-    const adjustedRenderedOffset = renderedOffset + rowsToMove * this.rowHeight;
+    const adjustedRenderedOffset = Math.max(0, renderedOffset + rowsToMove * this.rowHeight);
     this.viewport.setRenderedContentOffset(adjustedRenderedOffset);
 
     const adjustedStart = Math.max(0, start + rowsToMove);
@@ -129,5 +132,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
     this.indexChange.next(adjustedStart - lowerBuffer);
     this.stickyChange.next(adjustedRenderedOffset);
+    console.log(`Setting offset and range ${JSON.stringify({adjustedRenderedOffset, adjustedStart, adjustedEnd})}`)
+
   }
 }
