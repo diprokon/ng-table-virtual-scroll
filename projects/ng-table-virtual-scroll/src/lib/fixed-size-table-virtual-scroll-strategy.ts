@@ -98,25 +98,33 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
     const renderedOffset = this.viewport.getOffsetToRenderedContentStart();
     const start = renderedOffset / this.rowHeight;
-    const amount = Math.ceil(this.viewport.getViewportSize() / this.rowHeight);
-    const buffer = Math.ceil(amount * this.bufferMultiplier);
-    const end = start + amount + buffer;
-
-    console.log(`Initial offset and range ${JSON.stringify({renderedOffset, start, end})}`);
+    const itemsDisplayed = Math.ceil(this.viewport.getViewportSize() / this.rowHeight);
+    const bufferItems = Math.ceil(itemsDisplayed * this.bufferMultiplier);
+    const end = start + itemsDisplayed + 2 * bufferItems;
 
 
-    const lowerBuffer = Math.min(buffer, start);
-    const bufferOffset = renderedOffset + lowerBuffer * this.rowHeight;
+    const bufferOffset = renderedOffset + bufferItems * this.rowHeight;
     const scrollOffset = this.viewport.measureScrollOffset();
 
-    // How far the scroll offset is from the actual start of displayed information
+    // How far the scroll offset is from the lower buffer, which is usually where items start being displayed
     const relativeScrollOffset = scrollOffset - bufferOffset;
     const rowsScrolled = relativeScrollOffset / this.rowHeight;
 
+    const displayed = scrollOffset / this.rowHeight;
+    this.indexChange.next(displayed);
+
     // Only bother updating the displayed information if we've scrolled more than a row
     const rowSensitivity = 1.0;
-    console.log(`Rows scrolled: ${rowsScrolled}`);
     if (Math.abs(rowsScrolled) < rowSensitivity) {
+      this.viewport.setRenderedContentOffset(renderedOffset);
+      this.viewport.setRenderedRange({start, end});
+      return;
+    }
+
+    // Special case for the start of the table.
+    // At the top of the table, the first few rows are first rendered because they're visible, and then still rendered
+    // Because they move into the buffer. So we only need to change what's rendered once the user scrolls far enough down.
+    if (renderedOffset === 0 && rowsScrolled < 0) {
       this.viewport.setRenderedContentOffset(renderedOffset);
       this.viewport.setRenderedRange({start, end});
       return;
@@ -127,12 +135,9 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     this.viewport.setRenderedContentOffset(adjustedRenderedOffset);
 
     const adjustedStart = Math.max(0, start + rowsToMove);
-    const adjustedEnd = adjustedStart + amount + buffer;
+    const adjustedEnd = adjustedStart + itemsDisplayed + bufferItems;
     this.viewport.setRenderedRange({start: adjustedStart, end: adjustedEnd});
 
-    this.indexChange.next(adjustedStart - lowerBuffer);
     this.stickyChange.next(adjustedRenderedOffset);
-    console.log(`Setting offset and range ${JSON.stringify({adjustedRenderedOffset, adjustedStart, adjustedEnd})}`)
-
   }
 }
