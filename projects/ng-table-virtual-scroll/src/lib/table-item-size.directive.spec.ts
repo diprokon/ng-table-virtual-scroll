@@ -159,14 +159,14 @@ describe('TableItemSizeDirective', () => {
     const tbody = fixture.nativeElement.querySelector('tbody');
 
     expect(tbody.children.length)
-      .toBe(6, 'should render 6 10px row to fill 40px*(1 + 0.5) space');
+      .toBe(8, 'should render 8 10px row to fill 40px + 40px * 0.5 (buffer before) + 40px * 0.5 (buffer after) space');
   }));
 
   it('get the rendered range', fakeAsync(() => {
     finishInit(fixture);
 
     expect(viewport.getRenderedRange())
-      .toEqual({start: 0, end: 6}, 'should render the first 6 10px items to fill 40px*(1 + 0.5) space');
+      .toEqual({start: 0, end: 8}, 'should render 8 10px row to fill 40px + 40px * 0.5 (buffer before) + 40px * 0.5 (buffer after) space');
   }));
 
   it('should set the correct rendered range on scroll', fakeAsync(() => {
@@ -180,7 +180,7 @@ describe('TableItemSizeDirective', () => {
     flush();
 
     expect(viewport.getRenderedRange())
-      .toEqual({start: 6, end: 14}, 'current index should be 8, buffer = 2');
+      .toEqual({start: 8, end: 16}, 'scrolled ten items down, so items 10-14 should be visible, with items 8-16 rendered in the buffer');
   }));
 
   it('should subscribe and rerender after dataSource is changed', fakeAsync(() => {

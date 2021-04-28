@@ -135,7 +135,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
     this.viewport.setRenderedContentOffset(adjustedRenderedOffset);
 
     const adjustedStart = Math.max(0, start + rowsToMove);
-    const adjustedEnd = adjustedStart + itemsDisplayed + bufferItems;
+    const adjustedEnd = adjustedStart + itemsDisplayed + 2 * bufferItems;
     this.viewport.setRenderedRange({start: adjustedStart, end: adjustedEnd});
 
     this.stickyChange.next(adjustedRenderedOffset);
