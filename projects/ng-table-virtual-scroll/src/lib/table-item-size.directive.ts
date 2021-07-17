@@ -98,7 +98,8 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
     this.scrollStrategy.stickyChange
       .pipe(
         filter(() => this.isStickyEnabled()),
-        delayWhen(() => !this.stickyPositions ? timer(0) : of()),
+        // breaks sticky header on the top. needs investigation
+        // delayWhen(() => !this.stickyPositions ? timer(0) : of()),
         tap(() => {
           if (!this.stickyPositions) {
             this.initStickyPositions();
