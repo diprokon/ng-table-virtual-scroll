@@ -20,8 +20,8 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
   return tableDir.scrollStrategy;
 }
 
-const stickyHeaderSelector = '.mat-header-row .mat-table-sticky';
-const stickyFooterSelector = '.mat-footer-row .mat-table-sticky';
+const stickyHeaderSelector = '.mat-header-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
+const stickyFooterSelector = '.mat-footer-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
 
 const defaults = {
   rowHeight: 48,
