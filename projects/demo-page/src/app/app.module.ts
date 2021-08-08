@@ -22,7 +22,7 @@ import { HIGHLIGHT_OPTIONS, HighlightModule } from 'ngx-highlightjs';
 import { AppRoutingModule } from './app-routing.module';
 import { ExamplesPageComponent } from './examples-page/examples-page.component';
 import { ExamplesModule } from './examples';
-import { CommonModule } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, PlatformLocation } from '@angular/common';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
@@ -68,6 +68,11 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
           xml: () => import('highlight.js/lib/languages/xml')
         }
       }
+    },
+    {
+      provide: APP_BASE_HREF,
+      useFactory: (s: PlatformLocation) => s.getBaseHrefFromDOM(),
+      deps: [PlatformLocation]
     }
   ],
   bootstrap: [AppComponent]

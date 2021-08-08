@@ -1,8 +1,16 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import stackBlitzSDK from '@stackblitz/sdk';
 import { Example } from '../examples';
 import { Utils } from '../utils';
+import { APP_BASE_HREF } from '@angular/common';
+
+function trimEndSlash(url: string): string {
+  if (url[url.length - 1] === '/') {
+    url = url.substring(0, url.length - 1);
+  }
+  return url;
+}
 
 const templatePath = '/assets/stackblitz/';
 const templateFiles = [
@@ -32,7 +40,8 @@ export class StackblitzService {
   private files: { [path: string]: string } = {};
 
   constructor(
-    private http: HttpClient
+    private http: HttpClient,
+    @Inject(APP_BASE_HREF) private baseHref: string,
   ) {
     this.setFiles();
   }
@@ -55,7 +64,7 @@ export class StackblitzService {
   private setFiles(): void {
     templateFiles
       .forEach(fileUrl => {
-        this.http.get(templatePath + fileUrl, { responseType: 'text' })
+        this.http.get(trimEndSlash(this.baseHref) + templatePath + fileUrl, { responseType: 'text' })
           .subscribe(content => {
             this.files[fileUrl] = content;
           });
