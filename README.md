@@ -25,6 +25,11 @@ An Angular Directive, which allow to use [virtual scrolling](https://material.an
 $ npm install -save ng-table-virtual-scroll
 ```
 
+_For angular version 12 (or less), please use library version __1.3.\*___
+```bash
+$ npm install -save ng-table-virtual-scroll@1.3.*
+```
+
 <a name="usage"/>
 
 ## Usage
@@ -42,7 +47,7 @@ import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
 })
 export class AppModule { }
 ```
-**Note: you need to install and configure [virtual scrolling](https://material.angular.io/cdk/scrolling) and [mat-table](https://material.angular.io/components/table) before. TableVirtualScroll only make them work together properly**
+**Note: you need to install and configure [virtual scrolling](https://material.angular.io/cdk/scrolling) (ScrollingModule) and [mat-table](https://material.angular.io/components/table) (MatTableModule) before. TableVirtualScroll only make them work together properly**
 
 ### Configure the table
 

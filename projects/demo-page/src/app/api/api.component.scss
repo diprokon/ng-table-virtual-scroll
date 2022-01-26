@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @import 'helpers';
 
 code {
@@ -50,7 +51,7 @@ table {
   margin: 0 0 32px;
   width: 100%;
 
-  @include mat-elevation(2);
+  @include mat.elevation(2);
 
   th {
     font-weight: 400;

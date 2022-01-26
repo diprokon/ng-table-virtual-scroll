@@ -41,7 +41,7 @@ const defaults = {
   }]
 })
 export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDestroy {
-  private destroyed$ = new Subject();
+  private destroyed$ = new Subject<void>();
 
   // tslint:disable-next-line:no-input-rename
   @Input('tvsItemSize')

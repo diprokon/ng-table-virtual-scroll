@@ -1,12 +1,13 @@
-@import '~@angular/material/theming';
-$mat-app-primary: mat-palette($mat-indigo);
-$mat-app-accent: mat-palette($mat-amber);
+@use '@angular/material' as mat;
+@import '@angular/material/theming';
+$mat-app-primary: mat.define-palette(mat.$indigo-palette);
+$mat-app-accent: mat.define-palette(mat.$amber-palette);
 
-$mat-app-theme: mat-light-theme($mat-app-primary, $mat-app-accent);
+$mat-app-theme: mat.define-light-theme($mat-app-primary, $mat-app-accent);
 
 @function mat-theme-color($type: primary, $hue: default) {
   $color: map-get($mat-app-theme, $type);
-  @return mat-color($color, $hue);
+  @return mat.get-color-from-palette($color, $hue);
 }
 
 @mixin code() {

@@ -28,18 +28,6 @@
             "tsConfig": "projects/ng-table-virtual-scroll/tsconfig.spec.json",
             "karmaConfig": "projects/ng-table-virtual-scroll/karma.conf.js"
           }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/ng-table-virtual-scroll/tsconfig.lib.json",
-              "projects/ng-table-virtual-scroll/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
-          }
         }
       }
     },
@@ -63,7 +51,6 @@
             "main": "projects/demo-page/src/main.ts",
             "polyfills": "projects/demo-page/src/polyfills.ts",
             "tsConfig": "projects/demo-page/tsconfig.app.json",
-            "aot": true,
             "assets": [
               "projects/demo-page/src/favicon.ico",
               "projects/demo-page/src/assets"
@@ -71,7 +58,13 @@
             "styles": [
               "projects/demo-page/src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
           },
           "configurations": {
             "production": {
@@ -101,7 +94,8 @@
                 }
               ]
             }
-          }
+          },
+          "defaultConfiguration": ""
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -118,17 +112,6 @@
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
             "browserTarget": "demo-page:build"
-          }
-        },
-        "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
-          "options": {
-            "tsConfig": [
-              "projects/demo-page/tsconfig.app.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
           }
         }
       }

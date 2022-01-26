@@ -1,8 +1,9 @@
+@use '@angular/material' as mat;
 @import 'helpers';
 
-@include mat-core();
+@include mat.core();
 
-@include angular-material-theme($mat-app-theme);
+@include mat.all-component-themes($mat-app-theme);
 
 @import 'highlight';
 

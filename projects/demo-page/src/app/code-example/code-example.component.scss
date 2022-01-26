@@ -1,3 +1,4 @@
+@use '@angular/material' as mat;
 @import 'helpers';
 
 $foreground: map-get($mat-app-theme, foreground);
@@ -6,11 +7,11 @@ $foreground: map-get($mat-app-theme, foreground);
   display: block;
   margin: 20px 0;
   border-radius: 4px;
-  border: 1px solid rgba(mat-color($foreground, secondary-text), 0.2);
+  border: 1px solid rgba(mat.get-color-from-palette($foreground, secondary-text), 0.2);
 }
 
 .header {
-  color: mat-color($foreground, secondary-text);
+  color: mat.get-color-from-palette($foreground, secondary-text);
   align-content: center;
   align-items: center;
   display: flex;
@@ -37,9 +38,10 @@ $foreground: map-get($mat-app-theme, foreground);
   }
 
   pre  {
-    background: rgba(mat-color($foreground, secondary-text), 0.01);
-    border-bottom: 1px solid mat-color($foreground, divider);
+    background: rgba(mat.get-color-from-palette($foreground, secondary-text), 0.01);
+    border-bottom: 1px solid mat.get-color-from-palette($foreground, divider);
     margin: 0;
+    min-height: 60px;
   }
 }
 
@@ -52,5 +54,5 @@ $foreground: map-get($mat-app-theme, foreground);
   top: 0;
   right: 0;
   padding: 8px;
-  color: mat-color($foreground, secondary-text);
+  color: mat.get-color-from-palette($foreground, secondary-text);
 }

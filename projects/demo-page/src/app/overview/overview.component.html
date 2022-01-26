@@ -11,6 +11,11 @@
   <br>
   <code>$ npm install -save ng-table-virtual-scroll</code>
 </p>
+<p>
+  <small>
+    <b>Note</b>: for angular version <= 12, please use library version <code>1.3.*</code>
+  </small>
+</p>
 
 <p>
   To make it work in your project:
@@ -20,9 +25,10 @@
 <pre [highlight]="snippets.importModule"></pre>
 <p>
   <small>
-    <b>Note</b>: Note: you need to install and configure
-    <a href="https://material.angular.io/cdk/scrolling" target="_blank"><code>cdk-virtual-scroll-viewport</code></a> and
-    <a href="https://material.angular.io/components/table" target="_blank"><code>mat-table</code></a> before.
+    <b>Note</b>: you need to install and configure
+    <a href="https://material.angular.io/cdk/scrolling" target="_blank"><code>cdk-virtual-scroll-viewport</code></a>
+    <b> (ScrollingModule)</b> and
+    <a href="https://material.angular.io/components/table" target="_blank"><code>mat-table</code></a> <b> (MatTableModule)</b> before.
     <code>TableVirtualScroll</code> only make them work together properly
   </small>
 </p>

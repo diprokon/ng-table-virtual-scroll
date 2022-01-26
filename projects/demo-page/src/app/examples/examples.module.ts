@@ -22,25 +22,22 @@ const examples = [
 ];
 
 @NgModule({
-  declarations: [
-    ...examples
-  ],
-  imports: [
-    CommonModule,
-    MatTableModule,
-    ScrollingModule,
-    TableVirtualScrollModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatSortModule
-  ],
-  exports: [
-    ...examples
-  ],
-  entryComponents: [
-    ...examples
-  ]
+    declarations: [
+        ...examples
+    ],
+    imports: [
+        CommonModule,
+        MatTableModule,
+        ScrollingModule,
+        TableVirtualScrollModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatSortModule
+    ],
+    exports: [
+        ...examples
+    ]
 })
 export class ExamplesModule {
 }

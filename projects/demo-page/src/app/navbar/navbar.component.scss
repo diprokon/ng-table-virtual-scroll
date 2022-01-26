@@ -1,6 +1,7 @@
+@use '@angular/material' as mat;
 @import 'helpers';
 :host {
-  @include mat-elevation(2);
+  @include mat.elevation(2);
 }
 
 .header-logo {
