@@ -19,9 +19,9 @@ function getExample(title: string, component, name: string): Example {
     title,
     name,
     component,
-    ts: require(`!!raw-loader!../examples/${name}/${name}.component.ts`).default,
-    html: require(`!!raw-loader!../examples/${name}/${name}.component.html`).default,
-    css: require(`!!raw-loader!../examples/${name}/${name}.component.css`).default,
+    ts: require(`!!../examples/${name}/${name}.component.ts?raw`),
+    html: require(`!!../examples/${name}/${name}.component.html?raw`),
+    css: require(`!!../examples/${name}/${name}.component.css?raw`),
   };
 }
 
