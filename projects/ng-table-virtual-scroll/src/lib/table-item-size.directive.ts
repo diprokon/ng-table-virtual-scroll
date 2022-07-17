@@ -13,15 +13,15 @@ import { delayWhen, distinctUntilChanged, filter, map, switchMap, takeUntil, tap
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
-import { CdkHeaderRowDef } from '@angular/cdk/table';
+import { CdkHeaderRowDef, CdkTable } from '@angular/cdk/table';
 import { of, Subject, timer } from 'rxjs';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
 }
 
-const stickyHeaderSelector = '.mat-header-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
-const stickyFooterSelector = '.mat-footer-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
+const stickyHeaderSelector = '.mat-header-row .mat-table-sticky, .mat-header-row.mat-table-sticky, .cdk-header-row .cdk-table-sticky, .cdk-header-row.cdk-table-sticky';
+const stickyFooterSelector = '.mat-footer-row .mat-table-sticky, .mat-header-row.mat-table-sticky, .cdk-footer-row .cdk-table-sticky, .cdk-header-row.cdk-table-sticky';
 
 const defaults = {
   rowHeight: 48,
@@ -62,8 +62,8 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   @Input()
   bufferMultiplier: string | number = defaults.bufferMultiplier;
 
-  @ContentChild(MatTable, { static: false })
-  table: MatTable<any>;
+  @ContentChild(CdkTable, { static: false })
+  table: CdkTable<any>;
 
   scrollStrategy = new FixedSizeTableVirtualScrollStrategy();
 

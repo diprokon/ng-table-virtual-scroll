@@ -1,0 +1,25 @@
+<cdk-virtual-scroll-viewport [tvsItemSize]="30" [headerHeight]="40"
+                             class="wrapper mat-elevation-z2">
+
+  <table cdk-table [dataSource]="dataSource">
+
+    <tr cdk-header-row *cdkHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
+
+    <ng-container cdkColumnDef="id">
+      <th cdk-header-cell
+          *cdkHeaderCellDef
+          class="col-sm">No.</th>
+      <td cdk-cell
+          *cdkCellDef="let element"
+          class="col-sm">{{element.id}}</td>
+    </ng-container>
+
+    <ng-container cdkColumnDef="name">
+      <th cdk-header-cell *cdkHeaderCellDef>Name</th>
+      <td cdk-cell *cdkCellDef="let element">{{element.name}}</td>
+    </ng-container>
+
+  </table>
+
+</cdk-virtual-scroll-viewport>
