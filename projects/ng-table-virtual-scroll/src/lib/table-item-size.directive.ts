@@ -9,12 +9,22 @@ import {
   OnDestroy
 } from '@angular/core';
 import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import { delayWhen, distinctUntilChanged, filter, map, switchMap, takeUntil, tap } from 'rxjs/operators';
+import {
+  delayWhen,
+  distinctUntilChanged,
+  filter,
+  map,
+  startWith,
+  switchMap,
+  take,
+  takeUntil,
+  tap
+} from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef, CdkTable } from '@angular/cdk/table';
-import { of, Subject, timer } from 'rxjs';
+import { combineLatest, from, Subject } from 'rxjs';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
@@ -70,6 +80,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   dataSourceChanges = new Subject<void>();
 
   private stickyPositions: Map<HTMLElement, number>;
+  private resetStickyPositions = new Subject<void>();
 
   constructor(private zone: NgZone) {
   }
@@ -93,21 +104,35 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
       this.connectDataSource(dataSource);
     };
 
+    const updateStickyColumnStylesOrigin = this.table.updateStickyColumnStyles;
+    this.table.updateStickyColumnStyles = () => {
+      const stickyColumnStylesNeedReset = this.table['_stickyColumnStylesNeedReset'];
+      updateStickyColumnStylesOrigin.call(this.table);
+      if (stickyColumnStylesNeedReset) {
+        this.resetStickyPositions.next();
+      }
+    };
+
     this.connectDataSource(this.table.dataSource);
 
-    this.scrollStrategy.stickyChange
+    combineLatest([
+      this.scrollStrategy.stickyChange,
+      this.resetStickyPositions.pipe(
+        startWith(void 0),
+        delayWhen(() => this.getScheduleObservable()),
+        tap(() => {
+          this.stickyPositions = null;
+        })
+      )
+    ])
       .pipe(
         filter(() => this.isStickyEnabled()),
-        // breaks sticky header on the top. needs investigation
-        // delayWhen(() => !this.stickyPositions ? timer(0) : of()),
-        tap(() => {
-          if (!this.stickyPositions) {
-            this.initStickyPositions();
-          }
-        }),
         takeUntil(this.destroyed$)
       )
-      .subscribe((stickyOffset) => {
+      .subscribe(([stickyOffset]) => {
+        if (!this.stickyPositions) {
+          this.initStickyPositions();
+        }
         this.setSticky(stickyOffset);
       });
   }
@@ -184,5 +209,21 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
           this.stickyPositions.set(parent, parent.offsetTop);
         }
       });
+    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyFooterSelector)
+      .forEach(el => {
+        const parent = el.parentElement;
+        if (!this.stickyPositions.has(parent)) {
+          this.stickyPositions.set(parent, -parent.offsetTop);
+        }
+      });
+  }
+
+
+  private getScheduleObservable() {
+    // Use onStable when in the context of an ongoing change detection cycle so that we
+    // do not accidentally trigger additional cycles.
+    return this.zone.isStable
+      ? from(Promise.resolve(undefined))
+      : this.zone.onStable.pipe(take(1));
   }
 }
