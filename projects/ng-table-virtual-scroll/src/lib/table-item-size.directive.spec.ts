@@ -1,7 +1,7 @@
 import { CdkTableModule } from '@angular/cdk/table';
 import { TableItemSizeDirective } from './table-item-size.directive';
 import { Component, Type, ViewChild, ViewEncapsulation } from '@angular/core';
-import { TableVirtualScrollDataSource } from './table-data-source';
+import { CdkTableVirtualScrollDataSource, TableVirtualScrollDataSource } from './table-data-source';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { ComponentFixture, fakeAsync, flush, TestBed, waitForAsync } from '@angular/core/testing';
 import { MatTableModule } from '@angular/material/table';
@@ -9,23 +9,34 @@ import { TableVirtualScrollModule } from './table-virtual-scroll.module';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { animationFrameScheduler } from 'rxjs';
 import { By } from '@angular/platform-browser';
+import { DataSource } from '@angular/cdk/collections';
 
-class TestComponent {
-  @ViewChild(CdkVirtualScrollViewport, {static: true})
+interface Data {
+  id: number;
+}
+
+abstract class TestComponent {
+  @ViewChild(CdkVirtualScrollViewport, { static: true })
   viewport: CdkVirtualScrollViewport;
 
-  @ViewChild(TableItemSizeDirective, {static: true})
+  @ViewChild(TableItemSizeDirective, { static: true })
   directive: TableItemSizeDirective;
 
   displayedColumns = ['id'];
 
-  dataSource = new TableVirtualScrollDataSource(Array(50).fill(0).map((_, i) => ({id: i})));
+  data = Array(50).fill(0).map((_, i) => ({ id: i }));
+  data2 = Array(50).fill(0).map((_, i) => ({ id: i + 50 }));
+
+  dataSource = new this.dataSourceClass(this.data);
 
   headerEnabled = true;
   footerEnabled = false;
 
+  protected constructor(protected dataSourceClass: Type<DataSource<Data>>) {
+  }
+
   changeDataSource() {
-    this.dataSource = new TableVirtualScrollDataSource(Array(50).fill(0).map((_, i) => ({id: i + 50})));
+    this.dataSource = new this.dataSourceClass(this.data2);
   }
 }
 
@@ -91,7 +102,11 @@ class TestComponent {
   `],
   encapsulation: ViewEncapsulation.None
 })
-class CdkTableTestComponent extends TestComponent{}
+class CdkTableTestComponent extends TestComponent {
+  constructor() {
+    super(CdkTableVirtualScrollDataSource);
+  }
+}
 
 @Component({
   template: `
@@ -154,7 +169,11 @@ class CdkTableTestComponent extends TestComponent{}
   `],
   encapsulation: ViewEncapsulation.None
 })
-class MatTableTestComponent extends TestComponent{}
+class MatTableTestComponent extends TestComponent {
+  constructor() {
+    super(TableVirtualScrollDataSource);
+  }
+}
 
 /** Finish initializing the virtual scroll component at the beginning of a test. */
 function finishInit(fixture: ComponentFixture<any>) {
@@ -213,7 +232,7 @@ function runTableTests(
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      imports: [ScrollingModule, MatTableModule, TableVirtualScrollModule],
+      imports: [ScrollingModule, tableModule, TableVirtualScrollModule],
       declarations: [tableComponent]
     }).compileComponents();
   }));
@@ -246,7 +265,7 @@ function runTableTests(
 
     // should render 8 10px row to fill 40px + 40px * 0.5 (buffer before) + 40px * 0.5 (buffer after) space
     expect(viewport.getRenderedRange())
-      .toEqual({start: 0, end: 8});
+      .toEqual({ start: 0, end: 8 });
   }));
 
   it('should set the correct rendered range on scroll', fakeAsync(() => {
@@ -261,7 +280,7 @@ function runTableTests(
 
     // scrolled ten items down, so items 10-14 should be visible, with items 8-16 rendered in the buffer
     expect(viewport.getRenderedRange())
-      .toEqual({start: 8, end: 16});
+      .toEqual({ start: 8, end: 16 });
   }));
 
   it('should subscribe and rerender after dataSource is changed', fakeAsync(() => {

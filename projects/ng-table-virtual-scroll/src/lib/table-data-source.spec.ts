@@ -1,38 +1,59 @@
 import { TestBed } from '@angular/core/testing';
-import { TableVirtualScrollDataSource } from './table-data-source';
-import { MatTableDataSource } from '@angular/material/table';
+import { CdkTableVirtualScrollDataSource, TableVirtualScrollDataSource, TVSDataSource } from './table-data-source';
 import { Subject } from 'rxjs';
 import { ListRange } from '@angular/cdk/collections';
 import { map, switchMap } from 'rxjs/operators';
+import { DataSource } from '@angular/cdk/table';
+import { Type } from '@angular/core';
+import { MatTableDataSource } from '@angular/material/table';
 
 interface TestData {
   index: number;
 }
 
 function getTestData(n = 10): TestData[] {
-  return Array.from({length: n}).map((e, i) => ({index: i}));
+  return Array.from({ length: n }).map((e, i) => ({ index: i }));
 }
 
-// tslint:disable:no-string-literal
 describe('TableVirtualScrollDataSource', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
+  runDataSourceTests(TableVirtualScrollDataSource);
+
+  it('should extend MatTableDataSource', () => {
+    const dataSource: TVSDataSource<TestData> = new TableVirtualScrollDataSource();
+    expect(dataSource instanceof MatTableDataSource).toBeTruthy();
+  });
+});
+
+describe('CdkTableVirtualScrollDataSource', () => {
+  beforeEach(() => TestBed.configureTestingModule({}));
+
+  runDataSourceTests(CdkTableVirtualScrollDataSource);
+
+  it('should extend DataSource', () => {
+    const dataSource: TVSDataSource<TestData> = new CdkTableVirtualScrollDataSource();
+    expect(dataSource instanceof DataSource).toBeTruthy();
+  });
+});
+
+function runDataSourceTests(
+  // tslint:disable-next-line:variable-name
+  DataSourceClass: Type<TVSDataSource<TestData>>
+) {
+
   it('should be created', () => {
-    const dataSource: TableVirtualScrollDataSource<TestData> = new TableVirtualScrollDataSource<TestData>();
+    const dataSource: TVSDataSource<TestData> = new DataSourceClass();
     expect(dataSource).toBeTruthy();
 
-    const dataSource2: TableVirtualScrollDataSource<TestData> = new TableVirtualScrollDataSource<TestData>([{index: 0}]);
+    const dataSource2: TVSDataSource<TestData> = new DataSourceClass([{ index: 0 }]);
     expect(dataSource2).toBeTruthy();
   });
 
-  it('should extend MatTableDataSource', () => {
-    const dataSource: TableVirtualScrollDataSource<TestData> = new TableVirtualScrollDataSource<TestData>();
-    expect(dataSource instanceof MatTableDataSource).toBeTruthy();
-  });
 
   it('should have reaction on dataOfRange$ changes', () => {
     const testData: TestData[] = getTestData();
-    const dataSource: TableVirtualScrollDataSource<TestData> = new TableVirtualScrollDataSource<TestData>(testData);
+    const dataSource: TVSDataSource<TestData> = new DataSourceClass(testData);
     const stream = new Subject<TestData[]>();
 
     stream.subscribe(dataSource.dataOfRange$);
@@ -52,14 +73,14 @@ describe('TableVirtualScrollDataSource', () => {
 
   it('should provide correct data', () => {
     const testData: TestData[] = getTestData(10);
-    const dataSource: TableVirtualScrollDataSource<TestData> = new TableVirtualScrollDataSource<TestData>(testData);
+    const dataSource: TVSDataSource<TestData> = new DataSourceClass(testData);
     const stream = new Subject<ListRange>();
 
     dataSource.dataToRender$
       .pipe(
         switchMap(data => stream
           .pipe(
-            map(({start, end}) => data.slice(start, end))
+            map(({ start, end }) => data.slice(start, end))
           )
         )
       )
@@ -73,13 +94,13 @@ describe('TableVirtualScrollDataSource', () => {
       results.push(data);
     });
 
-    stream.next({start: 0, end: 2});
-    stream.next({start: 8, end: testData.length});
+    stream.next({ start: 0, end: 2 });
+    stream.next({ start: 8, end: testData.length });
 
     expect(results).toEqual([
       [],
-      [{index: 0}, {index: 1}],
-      [{index: 8}, {index: 9}]
+      [{ index: 0 }, { index: 1 }],
+      [{ index: 8 }, { index: 9 }]
     ]);
   });
-});
+}

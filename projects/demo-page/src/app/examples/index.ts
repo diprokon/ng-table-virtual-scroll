@@ -30,8 +30,8 @@ function getExample(title: string, component, name: string): Example {
 export const examples: Example[] = [
   getExample('Base Example', BaseExampleComponent, 'base-example'),
   getExample('Cdk Example', CdkExampleComponent, 'cdk-example'),
-  // getExample('Table with footer', FooterExampleComponent, 'footer-example'),
-  // getExample('Table with filter, sort and selection', FilterSortSelectExampleComponent, 'filter-sort-select-example'),
-  // getExample('Table with sticky header', StickyExampleComponent, 'sticky-example'),
-  // getExample('Table with sticky column', StickyColumnExampleComponent, 'sticky-column-example'),
+  getExample('Table with footer', FooterExampleComponent, 'footer-example'),
+  getExample('Table with filter, sort and selection', FilterSortSelectExampleComponent, 'filter-sort-select-example'),
+  getExample('Table with sticky header', StickyExampleComponent, 'sticky-example'),
+  getExample('Table with sticky column', StickyColumnExampleComponent, 'sticky-column-example'),
 ];

@@ -20,11 +20,11 @@ import {
   takeUntil,
   tap
 } from 'rxjs/operators';
-import { TableVirtualScrollDataSource } from './table-data-source';
-import { MatTable } from '@angular/material/table';
+import { isTVSDataSource, TableVirtualScrollDataSource } from './table-data-source';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef, CdkTable } from '@angular/cdk/table';
 import { combineLatest, from, Subject } from 'rxjs';
+import { MatTable } from '@angular/material/table';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
@@ -137,35 +137,39 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
       });
   }
 
-  connectDataSource(dataSource: any) {
+  connectDataSource(dataSource: unknown) {
     this.dataSourceChanges.next();
-    if (dataSource instanceof TableVirtualScrollDataSource) {
-      dataSource
-        .dataToRender$
-        .pipe(
-          distinctUntilChanged(),
-          takeUntil(this.dataSourceChanges),
-          takeUntil(this.destroyed$),
-          tap(data => this.scrollStrategy.dataLength = data.length),
-          switchMap(data =>
-            this.scrollStrategy
-              .renderedRangeStream
-              .pipe(
-                map(({
-                       start,
-                       end
-                     }) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
-              )
-          )
-        )
-        .subscribe(data => {
-          this.zone.run(() => {
-            dataSource.dataOfRange$.next(data);
-          });
-        });
-    } else {
-      throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');
+    if (!isTVSDataSource(dataSource)) {
+      if (this.table instanceof MatTable && !(dataSource instanceof TableVirtualScrollDataSource)) {
+        throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');
+      } else {
+        throw new Error('[tvsItemSize] requires CdkTableVirtualScrollDataSource be set as [dataSource] of [cdk-table]');
+      }
     }
+
+    dataSource
+      .dataToRender$
+      .pipe(
+        distinctUntilChanged(),
+        takeUntil(this.dataSourceChanges),
+        takeUntil(this.destroyed$),
+        tap(data => this.scrollStrategy.dataLength = data.length),
+        switchMap(data =>
+          this.scrollStrategy
+            .renderedRangeStream
+            .pipe(
+              map(({
+                     start,
+                     end
+                   }) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
+            )
+        )
+      )
+      .subscribe(data => {
+        this.zone.run(() => {
+          dataSource.dataOfRange$.next(data);
+        });
+      });
   }
 
   ngOnChanges() {
