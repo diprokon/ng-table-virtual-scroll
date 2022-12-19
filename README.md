@@ -70,11 +70,11 @@ export class MyComponent {
 ```
 
 #### Directive
-The `tvsItemSize` directive makes the magic
+The `tvsItemSize` directive and `#virtualScrollTable` makes the magic
 
 ```html
 <cdk-virtual-scroll-viewport tvsItemSize="48" headerHeight="56" style="height: 400px;">
-    <table mat-table [dataSource]="dataSource">
+    <table mat-table #virtualScrollTable [dataSource]="dataSource">
     ...
     </table>
 </cdk-virtual-scroll-viewport>
