@@ -24,16 +24,16 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build --configuration production",
+    "start": "ng serve demo-page",
+    "build": "ng build ng-table-virtual-scroll --configuration production",
     "postbuild": "cp README.md dist/ng-table-virtual-scroll/README.md",
-    "test": "ng test",
-    "lint": "ng lint",
-    "e2e": "ng e2e",
     "build:demo": "ng build demo-page --configuration production",
     "postbuild:demo": "cp docs/index.html docs/404.html",
-    "publish": "npm publish dist/ng-table-virtual-scroll",
-    "test-ci": "ng test ng-table-virtual-scroll --watch=false --browsers=ChromeHeadless"
+    "test": "ng test",
+    "lint": "ng lint",
+    "e2e": "cypress open --component -b chrome",
+    "e2e:ci": "cypress run --component",
+    "publish": "cd dist/ng-table-virtual-scroll && npm publish"
   },
   "private": true,
   "dependencies": {

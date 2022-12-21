@@ -20,8 +20,7 @@
     "enableResourceInlining": true
   },
   "exclude": [
-    "src/test.ts",
     "**/*.spec.ts",
-    "**/*.cy-spec.ts"
+    "**/*.cy.ts"
   ]
 }

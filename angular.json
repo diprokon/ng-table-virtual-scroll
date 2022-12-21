@@ -118,7 +118,7 @@
       }
     }
   },
-  "defaultProject": "ng-table-virtual-scroll",
+  "defaultProject": "demo-page",
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss"
