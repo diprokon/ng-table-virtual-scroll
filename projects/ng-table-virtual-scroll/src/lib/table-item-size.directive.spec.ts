@@ -3,7 +3,7 @@ import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { TableVirtualScrollDataSource } from './table-data-source';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { async, ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
-import { MatTableModule } from '@angular/material/table';
+import { MatLegacyTableModule as MatTableModule } from '@angular/material/legacy-table';
 import { TableVirtualScrollModule } from './table-virtual-scroll.module';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { animationFrameScheduler } from 'rxjs';

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { TableVirtualScrollDataSource } from './table-data-source';
-import { MatTableDataSource } from '@angular/material/table';
+import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
 import { Subject } from 'rxjs';
 import { ListRange } from '@angular/cdk/collections';
 import { map, switchMap } from 'rxjs/operators';
