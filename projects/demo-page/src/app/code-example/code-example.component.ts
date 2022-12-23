@@ -1,6 +1,6 @@
 import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { Example } from '../examples';
-import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {Clipboard} from '@angular/cdk/clipboard';
 import { StackblitzService } from '../services';
 

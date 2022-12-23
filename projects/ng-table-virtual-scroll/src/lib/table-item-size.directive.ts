@@ -21,7 +21,7 @@ import {
   tap
 } from 'rxjs/operators';
 import { TableVirtualScrollDataSource } from './table-data-source';
-import { MatLegacyTable as MatTable } from '@angular/material/legacy-table';
+import { MatTable } from '@angular/material/table';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
 import { CdkHeaderRowDef } from '@angular/cdk/table';
 import { combineLatest, from, Subject } from 'rxjs';
