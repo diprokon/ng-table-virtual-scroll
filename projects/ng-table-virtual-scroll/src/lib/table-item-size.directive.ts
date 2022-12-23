@@ -30,8 +30,8 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
   return tableDir.scrollStrategy;
 }
 
-const stickyHeaderSelector = '.mat-header-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
-const stickyFooterSelector = '.mat-footer-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
+const stickyHeaderSelector = '.mat-mdc-header-row .mat-mdc-table-sticky, .mat-mdc-header-row.mat-mdc-table-sticky';
+const stickyFooterSelector = '.mat-mdc-footer-row .mat-mdc-table-sticky, .mat-mdc-header-row.mat-mdc-table-sticky';
 
 const defaults = {
   rowHeight: 48,
@@ -152,9 +152,9 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
               .renderedRangeStream
               .pipe(
                 map(({
-                       start,
-                       end
-                     }) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
+                  start,
+                  end
+                }) => typeof start !== 'number' || typeof end !== 'number' ? data : data.slice(start, end))
               )
           )
         )
