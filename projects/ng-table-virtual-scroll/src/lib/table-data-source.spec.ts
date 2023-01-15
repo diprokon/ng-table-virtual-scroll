@@ -13,7 +13,6 @@ function getTestData(n = 10): TestData[] {
   return Array.from({length: n}).map((e, i) => ({index: i}));
 }
 
-// tslint:disable:no-string-literal
 describe('TableVirtualScrollDataSource', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 const snippets = {
   importModule: `import { TableVirtualScrollModule } from 'ng-table-virtual-scroll';
@@ -19,13 +19,6 @@ export class AppModule { }
   templateUrl: './overview.component.html',
   styleUrls: ['./overview.component.scss']
 })
-export class OverviewComponent implements OnInit {
-
+export class OverviewComponent {
   snippets = snippets;
-
-  constructor() { }
-
-  ngOnInit() {
-  }
-
 }

@@ -23,8 +23,15 @@
         },
         "test": {
           "builder": "@angular-builders/jest:run",
+          "options": {}
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-
+            "lintFilePatterns": [
+              "projects/ng-table-virtual-scroll/**/*.ts",
+              "projects/ng-table-virtual-scroll/**/*.html"
+            ]
           }
         }
       }
@@ -114,14 +121,25 @@
           "options": {
             "browserTarget": "demo-page:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/demo-page/**/*.ts",
+              "projects/demo-page/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "demo-page",
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss"
     }
+  },
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }
