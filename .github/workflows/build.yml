@@ -1,11 +1,11 @@
-name: Main
+name: Build
 on:
   push:
   pull_request:
     branches: master
 
 jobs:
-  main:
+  build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
           path: dist/demo
 
   deploy-demo:
-    needs: main
+    needs: build
     if: ${{ success() && github.event_name == 'push' }}
     runs-on: ubuntu-latest
     permissions:
