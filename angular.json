@@ -49,7 +49,7 @@
             "customWebpackConfig": {
               "path": "./webpack.config.ts"
             },
-            "outputPath": "docs",
+            "outputPath": "dist/demo",
             "stylePreprocessorOptions": {
               "includePaths": [
                 "projects/demo-page/src/styles"
