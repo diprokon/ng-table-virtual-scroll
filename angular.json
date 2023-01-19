@@ -22,11 +22,16 @@
           }
         },
         "test": {
-          "builder": "@angular-devkit/build-angular:karma",
+          "builder": "@angular-builders/jest:run",
+          "options": {}
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "main": "projects/ng-table-virtual-scroll/src/test.ts",
-            "tsConfig": "projects/ng-table-virtual-scroll/tsconfig.spec.json",
-            "karmaConfig": "projects/ng-table-virtual-scroll/karma.conf.js"
+            "lintFilePatterns": [
+              "projects/ng-table-virtual-scroll/**/*.ts",
+              "projects/ng-table-virtual-scroll/**/*.html"
+            ]
           }
         }
       }
@@ -44,7 +49,7 @@
             "customWebpackConfig": {
               "path": "./webpack.config.ts"
             },
-            "outputPath": "docs",
+            "outputPath": "dist/demo",
             "stylePreprocessorOptions": {
               "includePaths": [
                 "projects/demo-page/src/styles"
@@ -116,14 +121,25 @@
           "options": {
             "browserTarget": "demo-page:build"
           }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/demo-page/**/*.ts",
+              "projects/demo-page/**/*.html"
+            ]
+          }
         }
       }
     }
   },
-  "defaultProject": "ng-table-virtual-scroll",
   "schematics": {
     "@schematics/angular:component": {
       "style": "scss"
     }
+  },
+  "cli": {
+    "defaultCollection": "@angular-eslint/schematics"
   }
 }

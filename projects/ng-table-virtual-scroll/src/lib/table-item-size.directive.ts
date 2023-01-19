@@ -53,7 +53,7 @@ const defaults = {
 export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
-  // tslint:disable-next-line:no-input-rename
+  // eslint-disable-next-line @angular-eslint/no-input-rename
   @Input('tvsItemSize')
   rowHeight: string | number = defaults.rowHeight;
 
