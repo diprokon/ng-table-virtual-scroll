@@ -54,7 +54,7 @@ export class AppModule { }
 #### Data Source
 
 The `TableVirtualScrollDataSource` extends the [`MatTableDataSource`](https://material.angular.io/components/table/api#MatTableDataSource) and must be 
-used as the data source for the `mat-table`
+used as the data source for the `mat-table` (`CdkTableVirtualScrollDataSource` for `cdk-table`)
 
 **Note: without `TableVirtualScrollDataSource` the directive won't work**
 
@@ -96,15 +96,9 @@ Also, you can provide additional properties:
 
 `bufferMultiplier` -> the size of rendered buffer. The `bufferMultiplier * visibleRowsCount` number of rows will be rendered before and after visible part of the table.
 
-<a name="development"/>
+#### CdkTable
 
-## Development
-
-This project uses Angular CLI to build the package.
-
-```bash
-$ npm run build:lib ng-table-virtual-scroll
-```
+`cdk-table` from `CdkTableModule` is also supported. Just use `CdkTableVirtualScrollDataSource` as datasource
 
 ## Issues
 
