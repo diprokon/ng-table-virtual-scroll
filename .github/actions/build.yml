@@ -1,0 +1,46 @@
+name: 'Build and Test'
+description: 'Basic testing and building'
+inputs:
+  skip-setup-node:
+    required: false
+    default: false
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+        cache: 'yarn'
+
+    - name: Install dependencies
+      run: yarn install --immutable --immutable-cache --check-cache
+
+    - name: Testing
+      run: yarn list typescript
+
+    - name: Lint lib
+      run: yarn run lint
+
+    - name: Lint demo
+      run: yarn run lint:demo
+
+    - name: Unit tests
+      run: yarn run test
+
+    - name: Component tests
+      run: yarn run e2e:ci
+
+    - name: Save test result
+      uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: cypress-results
+        path: |
+          ./test-results/screenshots
+          ./test-results/videos
+
+    - name: Build lib
+      run: yarn run build
+
+    - name: Build demo
+      run: yarn run build:demo

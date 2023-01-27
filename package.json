@@ -33,8 +33,7 @@
     "lint": "ng lint ng-table-virtual-scroll",
     "lint:demo": "ng lint demo-page",
     "e2e": "cypress open --component -b chrome",
-    "e2e:ci": "cypress run --component --config-file cypress.config.ts",
-    "publish": "cd dist/ng-table-virtual-scroll && npm publish"
+    "e2e:ci": "cypress run --component --config-file cypress.config.ts"
   },
   "private": true,
   "dependencies": {
