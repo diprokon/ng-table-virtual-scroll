@@ -14,21 +14,27 @@ runs:
 
     - name: Install dependencies
       run: yarn install --immutable --immutable-cache --check-cache
+      shell: bash
 
     - name: Testing
       run: yarn list typescript
+      shell: bash
 
     - name: Lint lib
       run: yarn run lint
+      shell: bash
 
     - name: Lint demo
       run: yarn run lint:demo
+      shell: bash
 
     - name: Unit tests
       run: yarn run test
+      shell: bash
 
     - name: Component tests
       run: yarn run e2e:ci
+      shell: bash
 
     - name: Save test result
       uses: actions/upload-artifact@v2
@@ -41,6 +47,8 @@ runs:
 
     - name: Build lib
       run: yarn run build
+      shell: bash
 
     - name: Build demo
       run: yarn run build:demo
+      shell: bash
