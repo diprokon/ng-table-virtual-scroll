@@ -30,8 +30,8 @@ export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemS
   return tableDir.scrollStrategy;
 }
 
-const stickyHeaderSelector = '.mat-header-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
-const stickyFooterSelector = '.mat-footer-row .mat-table-sticky, .mat-header-row.mat-table-sticky';
+const stickyHeaderSelector = '.mat-header-row .mat-table-sticky, .mat-header-row.mat-table-sticky, .mat-mdc-header-row .mat-mdc-table-sticky, .mat-mdc-header-row.mat-mdc-table-sticky';
+const stickyFooterSelector = '.mat-footer-row .mat-table-sticky, .mat-header-row.mat-table-sticky, .mat-mdc-footer-row .mat-mdc-table-sticky, .mat-mdc-header-row.mat-mdc-table-sticky';
 
 const defaults = {
   rowHeight: 48,
