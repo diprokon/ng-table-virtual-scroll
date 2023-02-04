@@ -2,10 +2,10 @@
 
 An Angular Directive, which allow to use [virtual scrolling](https://material.angular.io/cdk/scrolling) in [mat-table](https://material.angular.io/components/table)
 
-[![npm](https://img.shields.io/badge/demo-online-ed1c46.svg)](https://diprokon.github.io/ng-table-virtual-scroll)
+[![Demo](https://img.shields.io/badge/demo-online-ed1c46.svg)](https://diprokon.github.io/ng-table-virtual-scroll)
 [![npm](https://img.shields.io/npm/v/ng-table-virtual-scroll.svg?maxAge=2592000?style=plastic)](https://www.npmjs.com/package/ng-table-virtual-scroll)
-[![Build](https://github.com/diprokon/ng-table-virtual-scroll/actions/workflows/build.yml/badge.svg?event=push)](https://github.com/diprokon/ng-table-virtual-scroll/actions/workflows/build.yml)
-[![npm](https://img.shields.io/npm/l/express.svg?maxAge=2592000)](/LICENSE.txt)
+[![Build & Test](https://github.com/diprokon/ng-table-virtual-scroll/actions/workflows/build-and-test.yml/badge.svg?branch=master&event=push)](https://github.com/diprokon/ng-table-virtual-scroll/actions/workflows/build-and-test.yml)
+[![License](https://img.shields.io/npm/l/express.svg?maxAge=2592000)](/LICENSE.txt)
 
 ## Table of Contents
 
