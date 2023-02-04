@@ -36,7 +36,8 @@
   2) Use <code>tvsItemSize</code> directive on <code>&lt;cdk-virtual-scroll-viewport&gt;</code>
 </p>
 <p>
-  3) Use <code>new TableVirtualScrollDataSource()</code> as <code>[dataSource]</code> of a <code>&lt;table mat-table&gt;</code>
+  3) Use <code>new TableVirtualScrollDataSource()</code> as <code>[dataSource]</code> of a <code>&lt;table mat-table&gt;</code>, or
+  <code>new CdkTableVirtualScrollDataSource()</code> as <code>[dataSource]</code> of a <code>&lt;table cdk-table&gt;</code>
 </p>
 
 <h3>tvsItemSize directive</h3>
@@ -75,6 +76,7 @@
 <h3>VirtualTableDataSource</h3>
 
 <p>
-  The <code>tvsItemSize</code> requires the <code>VirtualTableDataSource</code> to be provide as <code>mat-table[dataSource]</code>.
+  The <code>tvsItemSize</code> requires the <code>VirtualTableDataSource</code> to be provide as <code>mat-table[dataSource]</code>
+  (<code>CdkTableVirtualScrollDataSource</code> for <code>cdk-table[dataSource]</code>) .
   It is the same as the <code>MatTableDataSource</code>, but with few adjustments which was made so the virtual scroll could work.
 </p>

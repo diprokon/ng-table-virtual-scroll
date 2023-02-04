@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for `cdk-table` ([#79](https://github.com/diprokon/ng-table-virtual-scroll/issues/79))
+
 ## [1.4.1] - 2022.07.23
 
 ### Fixed

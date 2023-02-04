@@ -1,0 +1,23 @@
+.wrapper {
+  height: 300px;
+}
+
+table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.col-sm {
+  width: 70px;
+}
+
+th {
+  height: 40px; /* header height have to be the same as [headerHeight]*/
+  text-align: left;
+  background: white;
+}
+
+td {
+  height: 30px; /* row height have to be the same as [tvsItemSize]*/
+}
