@@ -55,7 +55,12 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
 
   public onDataLengthChanged(): void {
     if (this.viewport) {
-      this.viewport.setTotalContentSize(this.dataLength * this.rowHeight + this.headerHeight + this.footerHeight);
+      const contentSize = this.dataLength * this.rowHeight + this.headerHeight + this.footerHeight;
+      this.viewport.setTotalContentSize(contentSize);
+      const viewportSize = this.viewport.getViewportSize();
+      if (this.viewport.measureScrollOffset() + viewportSize >= contentSize) {
+        this.viewport.scrollToOffset(contentSize - viewportSize);
+      }
     }
     this.updateContent();
   }

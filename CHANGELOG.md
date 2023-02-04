@@ -11,11 +11,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Support for `cdk-table` ([#79](https://github.com/diprokon/ng-table-virtual-scroll/issues/79))
 
+### Fixed
+
+- [#109](https://github.com/diprokon/ng-table-virtual-scroll/issues/109):
+  Update scroll position when new data is less than current scroll position
+
 ## [1.4.1] - 2022.07.23
 
 ### Fixed
 
-- [#105](https://github.com/diprokon/ng-table-virtual-scroll/issues/105): Update of column definitions triggers sticky update
+- [#105](https://github.com/diprokon/ng-table-virtual-scroll/issues/105):
+  Update of column definitions triggers sticky update
 
 ## [1.4.0] - 2022-01-26
 

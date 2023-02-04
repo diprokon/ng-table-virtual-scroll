@@ -11,6 +11,17 @@ interface Data {
   id: number;
 }
 
+const ITEMS_COUNT = 5000;
+const ITEMS_COUNT2 = 500;
+
+const VIEWPORT_HEIGHT = 200;
+const ROW_HEIGHT = 20;
+const HEADER_HEIGHT = 30;
+const FOOTER_HEIGHT = 15;
+const BUFFER_MULTIPLIER = 0.5;
+
+const VISIBLE_ITEMS_COUNT = Math.ceil(VIEWPORT_HEIGHT / ROW_HEIGHT);
+
 abstract class TestComponent {
   headerEnabled = true;
   footerEnabled = false;
@@ -23,8 +34,8 @@ abstract class TestComponent {
 
   displayedColumns = ['id'];
 
-  data = Array(50).fill(0).map((_, i) => ({ id: i }));
-  data2 = Array(50).fill(0).map((_, i) => ({ id: i + 50 }));
+  data = Array(ITEMS_COUNT).fill(0).map((_, i) => ({ id: i }));
+  data2 = Array(ITEMS_COUNT2).fill(0).map((_, i) => ({ id: i + ITEMS_COUNT }));
 
   dataSource = new this.dataSourceClass(this.data);
 
@@ -38,10 +49,10 @@ abstract class TestComponent {
 
 @Component({
   template: `
-    <cdk-virtual-scroll-viewport tvsItemSize="10"
-                                 headerHeight="20"
-                                 footerHeight="15"
-                                 bufferMultiplier="0.5"
+    <cdk-virtual-scroll-viewport tvsItemSize="${ROW_HEIGHT}"
+                                 headerHeight="${HEADER_HEIGHT}"
+                                 footerHeight="${FOOTER_HEIGHT}"
+                                 bufferMultiplier="${BUFFER_MULTIPLIER}"
                                  [headerEnabled]="headerEnabled"
                                  [footerEnabled]="footerEnabled"
                                  class="wrapper">
@@ -65,11 +76,15 @@ abstract class TestComponent {
       </table>
 
     </cdk-virtual-scroll-viewport>
-    <button (click)="changeDataSource()" data-cy="changeDataSource"></button>
+    <button (click)="changeDataSource()" data-cy="changeDataSource">changeDataSource</button>
   `,
   styles: [`
     .wrapper {
-      height: 40px;
+      height: ${VIEWPORT_HEIGHT}px;
+    }
+
+    table {
+      border-collapse: collapse;
     }
 
     tr {
@@ -77,11 +92,11 @@ abstract class TestComponent {
     }
 
     th {
-      height: 20px !important;
+      height: ${HEADER_HEIGHT}px !important;
     }
 
     td {
-      height: 10px !important;
+      height: ${ROW_HEIGHT}px !important;
     }
 
     th, td {
@@ -93,7 +108,7 @@ abstract class TestComponent {
     }
 
     .footer-cell {
-      height: 15px !important;
+      height: ${FOOTER_HEIGHT}px !important;
     }
   `],
   encapsulation: ViewEncapsulation.None
@@ -107,10 +122,10 @@ class MatTableTestComponent extends TestComponent {
 
 @Component({
   template: `
-    <cdk-virtual-scroll-viewport tvsItemSize="10"
-                                 headerHeight="20"
-                                 footerHeight="15"
-                                 bufferMultiplier="0.5"
+    <cdk-virtual-scroll-viewport tvsItemSize="${ROW_HEIGHT}"
+                                 headerHeight="${HEADER_HEIGHT}"
+                                 footerHeight="${FOOTER_HEIGHT}"
+                                 bufferMultiplier="${BUFFER_MULTIPLIER}"
                                  [headerEnabled]="headerEnabled"
                                  [footerEnabled]="footerEnabled"
                                  class="wrapper">
@@ -134,11 +149,15 @@ class MatTableTestComponent extends TestComponent {
       </table>
 
     </cdk-virtual-scroll-viewport>
-    <button (click)="changeDataSource()" data-cy="changeDataSource"></button>
+    <button (click)="changeDataSource()" data-cy="changeDataSource">changeDataSource</button>
   `,
   styles: [`
     .wrapper {
-      height: 40px;
+      height: ${VIEWPORT_HEIGHT}px;
+    }
+
+    table {
+      border-collapse: collapse;
     }
 
     tr {
@@ -146,11 +165,11 @@ class MatTableTestComponent extends TestComponent {
     }
 
     th {
-      height: 20px !important;
+      height: ${HEADER_HEIGHT}px !important;
     }
 
     td {
-      height: 10px !important;
+      height: ${ROW_HEIGHT}px !important;
     }
 
     th, td {
@@ -162,7 +181,7 @@ class MatTableTestComponent extends TestComponent {
     }
 
     .footer-cell {
-      height: 15px !important;
+      height: ${FOOTER_HEIGHT}px !important;
     }
   `],
   encapsulation: ViewEncapsulation.None
@@ -202,24 +221,25 @@ function runTableTests(
     });
 
     it('should init correct state', () => {
-      // should render 8 10px row to fill 40px + 40px * 0.5 (buffer before) + 40px * 0.5 (buffer after) space
-      cy.get('tbody tr').should('have.length', 8);
-      expect(viewport.getRenderedRange()).to.deep.equal({ start: 0, end: 8 });
+      // should render buffer before, visible rows and buffer after
+      const renderedRowsCount = VISIBLE_ITEMS_COUNT * (BUFFER_MULTIPLIER + 1 + BUFFER_MULTIPLIER);
+      cy.get('tbody tr').should('have.length', renderedRowsCount);
+      expect(viewport.getRenderedRange()).to.deep.equal({ start: 0, end: renderedRowsCount });
       cy.get('.wrapper')
         .then(el => {
-          expect(el.get(0).scrollHeight).to.equal(520);
+          expect(el.get(0).scrollHeight).to.equal(HEADER_HEIGHT + ROW_HEIGHT * ITEMS_COUNT);
         });
     });
 
     it('should set the correct rendered range on scroll', () => {
-      // viewport.scrollToOffset(100);
+      const rowsToScroll = 100;
+      const bufferSize = BUFFER_MULTIPLIER * VISIBLE_ITEMS_COUNT;
       cy.get('.wrapper')
-        .scrollTo(0, 100)
+        .scrollTo(0, rowsToScroll * ROW_HEIGHT)
         .wait(0)
         .then(() => {
-          // scrolled ten items down, so items 10-14 should be visible, with items 8-16 rendered in the buffer
           expect(viewport.getRenderedRange())
-            .to.deep.equal({ start: 8, end: 16 });
+            .to.deep.equal({ start: rowsToScroll - bufferSize, end: rowsToScroll + VISIBLE_ITEMS_COUNT + bufferSize });
         });
     });
 
@@ -233,7 +253,29 @@ function runTableTests(
 
       cy.get('tbody')
         .children().first()
-        .should('contain', 'el - 50');
+        .should('contain', `el - ${ITEMS_COUNT}`);
+
+    });
+
+    it('should check scroll position after dataSource is changed', () => {
+      cy.get('tbody')
+        .children().first()
+        .should('contain', 'el - 0');
+
+      cy.get('.wrapper')
+        .scrollTo('bottom')
+        .wait(0)
+
+      cy.get('tbody')
+        .children().last()
+        .should('contain', `el - ${ITEMS_COUNT - 1}`);
+
+      cy.get('[data-cy="changeDataSource"]')
+        .click();
+
+      cy.get('tbody')
+        .children().last()
+        .should('contain', `el - ${ITEMS_COUNT + ITEMS_COUNT2 - 1}`);
 
     });
   });
@@ -251,7 +293,7 @@ function runTableTests(
       cy.get('.wrapper')
         .wait(0)
         .then(el => {
-          expect(el.get(0).scrollHeight).to.equal(535);
+          expect(el.get(0).scrollHeight).to.equal(HEADER_HEIGHT + ROW_HEIGHT * ITEMS_COUNT + FOOTER_HEIGHT);
         });
     });
 
@@ -268,7 +310,7 @@ function runTableTests(
       cy.get('.wrapper')
         .wait(0)
         .then(el => {
-          expect(el.get(0).scrollHeight).to.equal(500);
+          expect(el.get(0).scrollHeight).to.equal(ROW_HEIGHT * ITEMS_COUNT);
         });
     });
   });
