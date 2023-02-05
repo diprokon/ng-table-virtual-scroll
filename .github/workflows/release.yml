@@ -20,6 +20,12 @@ jobs:
           registry-url: https://registry.npmjs.org/
           cache: 'yarn'
 
+      # Configure Git
+      - name: Git configuration
+        run: |
+          git config --global user.email "<>"
+          git config --global user.name "GitHub Actions"
+
       # Bump package version
       # Use tag latest
       - name: Bump release version
@@ -48,10 +54,11 @@ jobs:
 
       # Update changelog unreleased section with new version
       - name: Update changelog
-        uses: superfaceai/release-changelog-action@v1
+        uses: superfaceai/release-changelog-action@v2
         with:
           path-to-changelog: CHANGELOG.md
           version: ${{ env.NEW_VERSION }}
+          format: markdownlint
           operation: release
 
       # Commit changes
@@ -85,7 +92,7 @@ jobs:
       # Read version changelog
       - id: get-changelog
         name: Get version changelog
-        uses: superfaceai/release-changelog-action@v1
+        uses: superfaceai/release-changelog-action@v2
         with:
           path-to-changelog: CHANGELOG.md
           version: ${{ env.NEW_VERSION }}

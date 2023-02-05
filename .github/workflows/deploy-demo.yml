@@ -26,3 +26,5 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist/demo
+          git-config-name: GitHub Actions
+          git-config-email: <>
