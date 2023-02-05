@@ -16,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - [#109](https://github.com/diprokon/ng-table-virtual-scroll/issues/109):
   Update scroll position when new data is less than current scroll position
 
-## [1.4.1] - 2022.07.23
+## [1.4.1] - 2022-07-22
 
 ### Fixed
 
@@ -28,3 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Build with Ivy (View Engine is no longer available in Angular v13)
+
+
+[Unreleased]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.4.1...HEAD
+[1.4.1]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.4.0...v1.4.1
+[1.4.0]: https://github.com/diprokon/ng-table-virtual-scroll/releases/tag/v1.4.0
