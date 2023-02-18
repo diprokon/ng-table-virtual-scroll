@@ -80,12 +80,12 @@ jobs:
         run: yarn run build
 
       # Publish version to public repository
-#      - name: Publish
-#        run: |
-#          cd dist/ng-table-virtual-scroll
-#          yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
-#        env:
-#          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
+      - name: Publish
+        run: |
+          cd dist/ng-table-virtual-scroll
+          yarn publish --verbose --access public --tag ${{ env.RELEASE_TAG }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_ACCESS_TOKEN }}
 
       # Push repository changes
       - name: Push changes to repository
