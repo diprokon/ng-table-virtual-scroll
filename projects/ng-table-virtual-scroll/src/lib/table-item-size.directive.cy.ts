@@ -25,6 +25,8 @@ const VISIBLE_ITEMS_COUNT = Math.ceil(VIEWPORT_HEIGHT / ROW_HEIGHT);
 abstract class TestComponent {
   headerEnabled = true;
   footerEnabled = false;
+  stickyHeader = false;
+  stickyFooter = false;
 
   @ViewChild(CdkVirtualScrollViewport, { static: true })
   viewport: CdkVirtualScrollViewport;
@@ -60,11 +62,11 @@ abstract class TestComponent {
       <table mat-table [dataSource]="dataSource">
 
         <ng-container *ngIf="headerEnabled">
-          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: stickyHeader"></tr>
         </ng-container>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
         <ng-container *ngIf="footerEnabled">
-          <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+          <tr mat-footer-row *matFooterRowDef="displayedColumns; sticky: stickyFooter"></tr>
         </ng-container>
 
         <ng-container matColumnDef="id">
@@ -133,11 +135,11 @@ class MatTableTestComponent extends TestComponent {
       <table cdk-table [dataSource]="dataSource">
 
         <ng-container *ngIf="headerEnabled">
-          <tr cdk-header-row *cdkHeaderRowDef="displayedColumns"></tr>
+          <tr cdk-header-row *cdkHeaderRowDef="displayedColumns; sticky: stickyHeader"></tr>
         </ng-container>
         <tr cdk-row *cdkRowDef="let row; columns: displayedColumns;"></tr>
         <ng-container *ngIf="footerEnabled">
-          <tr cdk-footer-row *cdkFooterRowDef="displayedColumns"></tr>
+          <tr cdk-footer-row *cdkFooterRowDef="displayedColumns; sticky: stickyFooter"></tr>
         </ng-container>
 
         <ng-container cdkColumnDef="id">
@@ -264,7 +266,7 @@ function runTableTests(
 
       cy.get('.wrapper')
         .scrollTo('bottom')
-        .wait(0)
+        .wait(0);
 
       cy.get('tbody')
         .children().last()
@@ -312,6 +314,102 @@ function runTableTests(
         .then(el => {
           expect(el.get(0).scrollHeight).to.equal(ROW_HEIGHT * ITEMS_COUNT);
         });
+    });
+
+    const tests: {
+      title: string;
+      props: {
+        headerEnabled?: boolean;
+        footerEnabled?: boolean;
+        stickyHeader?: boolean;
+        stickyFooter?: boolean;
+      },
+      checks: {
+        header?: boolean;
+        footer?: boolean;
+      }
+    }[] =
+      [
+        {
+          title: 'sticky header',
+          props: {
+            headerEnabled: true,
+            stickyHeader: true
+          },
+          checks: {
+            header: true
+          }
+        },
+        {
+          title: 'sticky footer',
+          props: {
+            headerEnabled: false,
+            footerEnabled: true,
+            stickyFooter: true
+          },
+          checks: {
+            footer: true
+          }
+        },
+        {
+          title: 'sticky header with footer enabled',
+          props: {
+            headerEnabled: true,
+            footerEnabled: true,
+            stickyHeader: true
+          },
+          checks: {
+            header: true
+          }
+        },
+        {
+          title: 'sticky footer with header enabled',
+          props: {
+            headerEnabled: true,
+            footerEnabled: true,
+            stickyFooter: true
+          },
+          checks: {
+            footer: true
+          }
+        },
+        {
+          title: 'sticky header and footer',
+          props: {
+            headerEnabled: true,
+            footerEnabled: true,
+            stickyHeader: true,
+            stickyFooter: true
+          },
+          checks: {
+            header: true,
+            footer: true
+          }
+        },
+      ];
+
+    tests.forEach(test => {
+      it('should have visible ' + test.title, () => {
+        mount(tableComponent, {
+          imports: [ScrollingModule, tableModule],
+          declarations: [TableItemSizeDirective],
+          componentProperties: test.props
+        });
+
+        const rowsToScroll = 100;
+        cy.get('.wrapper')
+          .scrollTo(0, rowsToScroll * ROW_HEIGHT)
+          .wait(0);
+
+        if (test.props.headerEnabled) {
+          cy.get('th')
+            .should((test.checks.header ? '' : 'not.') + `be.inViewport`, '.wrapper');
+        }
+        if (test.props.footerEnabled) {
+          cy.get('.footer-cell')
+            .should((test.checks.footer ? '' : 'not.') + `be.inViewport`, '.wrapper');
+        }
+      });
     });
   });
 }

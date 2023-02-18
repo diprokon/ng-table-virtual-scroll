@@ -1,3 +1,5 @@
+import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
+import { CanStick, CdkTable } from '@angular/cdk/table';
 import {
   AfterContentInit,
   ContentChild,
@@ -8,30 +10,29 @@ import {
   OnChanges,
   OnDestroy
 } from '@angular/core';
-import { VIRTUAL_SCROLL_STRATEGY } from '@angular/cdk/scrolling';
-import {
-  delayWhen,
-  distinctUntilChanged,
-  filter,
-  map,
-  startWith,
-  switchMap,
-  take,
-  takeUntil,
-  tap
-} from 'rxjs/operators';
-import { isTVSDataSource, TableVirtualScrollDataSource } from './table-data-source';
-import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
-import { CdkHeaderRowDef, CdkTable } from '@angular/cdk/table';
-import { combineLatest, from, Subject } from 'rxjs';
 import { MatTable } from '@angular/material/table';
+import { combineLatest, from, Subject } from 'rxjs';
+import { delayWhen, distinctUntilChanged, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
+import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
+import { isTVSDataSource, TableVirtualScrollDataSource } from './table-data-source';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
 }
 
-const stickyHeaderSelector = '.mat-header-row .mat-table-sticky, .mat-header-row.mat-table-sticky, .cdk-header-row .cdk-table-sticky, .cdk-header-row.cdk-table-sticky';
-const stickyFooterSelector = '.mat-footer-row .mat-table-sticky, .mat-header-row.mat-table-sticky, .cdk-footer-row .cdk-table-sticky, .cdk-header-row.cdk-table-sticky';
+function combineSelectors(...pairs: string[][]): string {
+  return pairs.map((selectors) => `${selectors.join(' ')}, ${selectors.join('')}`).join(', ');
+}
+
+const stickyHeaderSelector = combineSelectors(
+  ['.mat-header-row', '.mat-table-sticky'],
+  ['.cdk-header-row', '.cdk-table-sticky']
+);
+
+const stickyFooterSelector = combineSelectors(
+  ['.mat-footer-row', '.mat-table-sticky'],
+  ['.cdk-footer-row', '.cdk-table-sticky']
+);
 
 const defaults = {
   rowHeight: 48,
@@ -81,6 +82,10 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
 
   private stickyPositions: Map<HTMLElement, number>;
   private resetStickyPositions = new Subject<void>();
+  private stickyEnabled = {
+    header: false,
+    footer: false
+  };
 
   constructor(private zone: NgZone) {
   }
@@ -89,12 +94,6 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
     this.destroyed$.next();
     this.destroyed$.complete();
     this.dataSourceChanges.complete();
-  }
-
-  private isStickyEnabled(): boolean {
-    return !!this.scrollStrategy.viewport && (this.table['_headerRowDefs'] as CdkHeaderRowDef[])
-      .map(def => def.sticky)
-      .reduce((prevState, state) => prevState && state, true);
   }
 
   ngAfterContentInit() {
@@ -126,14 +125,18 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
       )
     ])
       .pipe(
-        filter(() => this.isStickyEnabled()),
         takeUntil(this.destroyed$)
       )
       .subscribe(([stickyOffset]) => {
         if (!this.stickyPositions) {
           this.initStickyPositions();
         }
-        this.setSticky(stickyOffset);
+        if (this.stickyEnabled.header) {
+          this.setStickyHeader(stickyOffset);
+        }
+        if (this.stickyEnabled.footer) {
+          this.setStickyFooter(stickyOffset);
+        }
       });
   }
 
@@ -182,8 +185,26 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
     this.scrollStrategy.setConfig(config);
   }
 
+  private setStickyEnabled(): boolean {
+    if (!this.scrollStrategy.viewport) {
+      this.stickyEnabled = {
+        header: false,
+        footer: false
+      };
+      return;
+    }
 
-  setSticky(offset: number) {
+    const isEnabled = (rowDefs: CanStick[]) => rowDefs
+      .map(def => def.sticky)
+      .reduce((prevState, state) => prevState && state, true);
+
+    this.stickyEnabled = {
+      header: isEnabled(this.table['_headerRowDefs']),
+      footer: isEnabled(this.table['_footerRowDefs']),
+    };
+  }
+
+  private setStickyHeader(offset: number) {
     this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyHeaderSelector)
       .forEach((el: HTMLElement) => {
         const parent = el.parentElement;
@@ -193,6 +214,9 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
         }
         el.style.top = `${baseOffset - offset}px`;
       });
+  }
+
+  private setStickyFooter(offset: number) {
     this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyFooterSelector)
       .forEach((el: HTMLElement) => {
         const parent = el.parentElement;
@@ -206,20 +230,28 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
 
   private initStickyPositions() {
     this.stickyPositions = new Map<HTMLElement, number>();
-    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyHeaderSelector)
-      .forEach(el => {
-        const parent = el.parentElement;
-        if (!this.stickyPositions.has(parent)) {
-          this.stickyPositions.set(parent, parent.offsetTop);
-        }
-      });
-    this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyFooterSelector)
-      .forEach(el => {
-        const parent = el.parentElement;
-        if (!this.stickyPositions.has(parent)) {
-          this.stickyPositions.set(parent, -parent.offsetTop);
-        }
-      });
+
+    this.setStickyEnabled();
+
+    if (this.stickyEnabled.header) {
+      this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyHeaderSelector)
+        .forEach(el => {
+          const parent = el.parentElement;
+          if (!this.stickyPositions.has(parent)) {
+            this.stickyPositions.set(parent, parent.offsetTop);
+          }
+        });
+    }
+
+    if (this.stickyEnabled.footer) {
+      this.scrollStrategy.viewport.elementRef.nativeElement.querySelectorAll(stickyFooterSelector)
+        .forEach(el => {
+          const parent = el.parentElement;
+          if (!this.stickyPositions.has(parent)) {
+            this.stickyPositions.set(parent, -parent.offsetTop);
+          }
+        });
+    }
   }
 
 
