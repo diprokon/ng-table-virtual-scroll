@@ -2,7 +2,7 @@
 
 <div class="main-wrapper">
   <div class="main-content docs">
-    <nav mat-tab-nav-bar>
+    <nav mat-tab-nav-bar [tabPanel]="tabPanel">
       <a mat-tab-link
          *ngFor="let link of navLinks"
          [routerLink]="link.path"
@@ -12,6 +12,8 @@
         {{link.label}}
       </a>
     </nav>
-    <router-outlet></router-outlet>
+    <mat-tab-nav-panel #tabPanel>
+      <router-outlet></router-outlet>
+    </mat-tab-nav-panel>
   </div>
 </div>

@@ -21,4 +21,11 @@ export class AppModule { }
 })
 export class OverviewComponent {
   snippets = snippets;
+
+  versionCompatibilityColumns = ['ng', 'lib'];
+  versionCompatibility = Object.entries({
+    '\>= 15': 'latest',
+    '13 - 14': '1.5.*',
+    '<= 12': '1.3.*'
+  });
 }

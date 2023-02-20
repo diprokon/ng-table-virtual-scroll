@@ -14,7 +14,7 @@ import { MatTable } from '@angular/material/table';
 import { combineLatest, from, Subject } from 'rxjs';
 import { delayWhen, distinctUntilChanged, map, startWith, switchMap, take, takeUntil, tap } from 'rxjs/operators';
 import { FixedSizeTableVirtualScrollStrategy } from './fixed-size-table-virtual-scroll-strategy';
-import { isTVSDataSource, TableVirtualScrollDataSource } from './table-data-source';
+import { CdkTableVirtualScrollDataSource, isTVSDataSource, TableVirtualScrollDataSource } from './table-data-source';
 
 export function _tableVirtualScrollDirectiveStrategyFactory(tableDir: TableItemSizeDirective) {
   return tableDir.scrollStrategy;
@@ -25,14 +25,24 @@ function combineSelectors(...pairs: string[][]): string {
 }
 
 const stickyHeaderSelector = combineSelectors(
+  ['.mat-mdc-header-row', '.mat-mdc-table-sticky'],
   ['.mat-header-row', '.mat-table-sticky'],
   ['.cdk-header-row', '.cdk-table-sticky']
 );
 
 const stickyFooterSelector = combineSelectors(
+  ['.mat-mdc-footer-row', '.mat-mdc-table-sticky'],
   ['.mat-footer-row', '.mat-table-sticky'],
   ['.cdk-footer-row', '.cdk-table-sticky']
 );
+
+function isMatTable<T>(table: unknown): table is MatTable<T> {
+  return table instanceof CdkTable && table['stickyCssClass'].includes('mat');
+}
+
+function isCdkTable<T>(table: unknown): table is CdkTable<T> {
+  return table instanceof CdkTable && table['stickyCssClass'].includes('cdk');
+}
 
 const defaults = {
   rowHeight: 48,
@@ -51,7 +61,7 @@ const defaults = {
     deps: [forwardRef(() => TableItemSizeDirective)]
   }]
 })
-export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDestroy {
+export class TableItemSizeDirective<T = unknown> implements OnChanges, AfterContentInit, OnDestroy {
   private destroyed$ = new Subject<void>();
 
   // eslint-disable-next-line @angular-eslint/no-input-rename
@@ -74,7 +84,7 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   bufferMultiplier: string | number = defaults.bufferMultiplier;
 
   @ContentChild(CdkTable, { static: false })
-  table: CdkTable<any>;
+  table: CdkTable<T>;
 
   scrollStrategy = new FixedSizeTableVirtualScrollStrategy();
 
@@ -143,11 +153,13 @@ export class TableItemSizeDirective implements OnChanges, AfterContentInit, OnDe
   connectDataSource(dataSource: unknown) {
     this.dataSourceChanges.next();
     if (!isTVSDataSource(dataSource)) {
-      if (this.table instanceof MatTable && !(dataSource instanceof TableVirtualScrollDataSource)) {
-        throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');
-      } else {
-        throw new Error('[tvsItemSize] requires CdkTableVirtualScrollDataSource be set as [dataSource] of [cdk-table]');
-      }
+      throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource or CdkTableVirtualScrollDataSource be set as [dataSource] of the table');
+    }
+    if (isMatTable(this.table) && !(dataSource instanceof TableVirtualScrollDataSource)) {
+      throw new Error('[tvsItemSize] requires TableVirtualScrollDataSource be set as [dataSource] of [mat-table]');
+    }
+    if (isCdkTable(this.table) && !(dataSource instanceof CdkTableVirtualScrollDataSource)) {
+      throw new Error('[tvsItemSize] requires CdkTableVirtualScrollDataSource be set as [dataSource] of [cdk-table]');
     }
 
     dataSource

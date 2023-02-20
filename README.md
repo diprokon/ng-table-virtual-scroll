@@ -25,10 +25,14 @@ An Angular Directive, which allow to use [virtual scrolling](https://material.an
 $ npm install -save ng-table-virtual-scroll
 ```
 
-_For angular version 12 (or less), please use library version __1.3.\*___
-```bash
-$ npm install -save ng-table-virtual-scroll@1.3.*
-```
+_**Version compatibility**_
+
+| Angular version | Library version |
+|-----------------|-----------------|
+| \>= 15          | latest          |
+| 13 - 14         | 1.5.*           |
+| <= 12           | 1.3.*           |
+
 
 <a name="usage"/>
 

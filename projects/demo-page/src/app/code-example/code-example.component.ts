@@ -1,7 +1,7 @@
-import { Component, ComponentFactoryResolver, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
-import { Example } from '../examples';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { Component, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import {Clipboard} from '@angular/cdk/clipboard';
+import { Example } from '../examples';
 import { StackblitzService } from '../services';
 
 @Component({
@@ -36,7 +36,6 @@ export class CodeExampleComponent implements OnInit {
   ];
 
   constructor(
-    private factoryResolver: ComponentFactoryResolver,
     private snackbar: MatSnackBar,
     private clipboard: Clipboard,
     private stackblitzService: StackblitzService,
@@ -44,8 +43,7 @@ export class CodeExampleComponent implements OnInit {
   }
 
   ngOnInit() {
-    const factory = this.factoryResolver.resolveComponentFactory(this.example.component);
-    this.container.createComponent(factory);
+    this.container.createComponent(this.example.component);
   }
 
   copySource(text: string) {

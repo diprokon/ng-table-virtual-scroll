@@ -1,9 +1,9 @@
 @use '@angular/material' as mat;
-@import 'helpers';
+@use 'helpers';
 
 @include mat.core();
 
-@include mat.all-component-themes($mat-app-theme);
+@include mat.all-component-themes(helpers.$mat-app-theme);
 
 @import 'highlight';
 
@@ -15,7 +15,7 @@ body {
 body {
   margin: 0;
   padding: 0;
-  background: mat-theme-color(background, background);
+  background: helpers.mat-theme-color(background, background);
   font-family: Roboto, "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 }
 

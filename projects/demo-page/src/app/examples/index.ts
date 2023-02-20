@@ -1,3 +1,4 @@
+import { Type } from '@angular/core';
 import { BaseExampleComponent } from './base-example/base-example.component';
 import { CdkExampleComponent } from './cdk-example/cdk-example.component';
 import { FilterSortSelectExampleComponent } from './filter-sort-select-example/filter-sort-select-example.component';
@@ -8,7 +9,7 @@ import { StickyExampleComponent } from './sticky-example/sticky-example.componen
 export * from './examples.module';
 
 export interface Example {
-  component: any;
+  component: Type<any>;
   ts: string;
   html: string;
   css: string;
@@ -16,7 +17,7 @@ export interface Example {
   title: string;
 }
 
-function getExample(title: string, component, name: string): Example {
+function getExample(title: string, component: Type<any>, name: string): Example {
   return {
     title,
     name,

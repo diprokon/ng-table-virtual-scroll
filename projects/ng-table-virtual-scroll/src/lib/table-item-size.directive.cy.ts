@@ -2,6 +2,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { CdkTableModule } from '@angular/cdk/table';
 import { Component, Type, ViewChild, ViewEncapsulation } from '@angular/core';
+import { MatLegacyTableModule } from '@angular/material/legacy-table';
 import { MatTableModule } from '@angular/material/table';
 import { mount } from 'cypress/angular';
 import { CdkTableVirtualScrollDataSource, TableVirtualScrollDataSource } from './table-data-source';
@@ -200,6 +201,9 @@ describe('TableItemSizeDirective', () => {
   });
   describe('MatTable', () => {
     runTableTests(MatTableModule, MatTableTestComponent);
+  });
+  describe('MatLegacyTableModule', () => {
+    runTableTests(MatLegacyTableModule, MatTableTestComponent);
   });
 });
 

@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Support for Angular and Angular Material 15 ([#107](https://github.com/diprokon/ng-table-virtual-scroll/issues/107), [#111](https://github.com/diprokon/ng-table-virtual-scroll/issues/111))
+
+### Removed
+
+- Support for Angular 14 and less
+
 ## [1.5.1] - 2023-02-18
 
 ### Fixed
