@@ -77,7 +77,7 @@ export class MyComponent {
 The `tvsItemSize` directive makes the magic
 
 ```html
-<cdk-virtual-scroll-viewport tvsItemSize="48" headerHeight="56" style="height: 400px;">
+<cdk-virtual-scroll-viewport tvsItemSize="52" headerHeight="56" style="height: 400px;">
     <table mat-table [dataSource]="dataSource">
     ...
     </table>
@@ -88,7 +88,7 @@ Make sure, you set the height to the `<cdk-virtual-scroll-viewport>` container
 
 Also, you can provide additional properties:
 
-`tvsItemSize` -> the row height in px (default: 48)
+`tvsItemSize` -> the row height in px (default: 52)
 
 `headerHeight` -> the header row height in px (default: 56)
 
