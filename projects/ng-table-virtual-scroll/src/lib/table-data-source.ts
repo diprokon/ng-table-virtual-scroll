@@ -89,7 +89,7 @@ export class TableVirtualScrollDataSource<T> extends MatTableDataSource<T> imple
   public dataOfRange$: Subject<T[]>;
   private streamsReady: boolean;
 
-  _updateChangeSubscription() {
+  override _updateChangeSubscription() {
     this.initStreams();
     const _sort: MatSort | null = this['_sort'];
     const _paginator: MatPaginator | null = this['_paginator'];
