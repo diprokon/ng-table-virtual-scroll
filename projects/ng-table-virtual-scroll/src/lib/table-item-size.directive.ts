@@ -45,7 +45,7 @@ function isCdkTable<T>(table: unknown): table is CdkTable<T> {
 }
 
 const defaults = {
-  rowHeight: 48,
+  rowHeight: 52,
   headerHeight: 56,
   headerEnabled: true,
   footerHeight: 48,
