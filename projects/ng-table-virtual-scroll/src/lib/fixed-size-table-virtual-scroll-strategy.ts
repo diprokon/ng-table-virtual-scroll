@@ -31,8 +31,10 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   }
 
   set dataLength(value: number) {
-    this._dataLength = value;
-    this.onDataLengthChanged();
+    if (value !== this._dataLength) {
+      this._dataLength = value;
+      this.onDataLengthChanged();
+    }
   }
 
   private _dataLength = 0;
