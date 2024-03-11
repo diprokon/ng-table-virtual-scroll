@@ -40,6 +40,7 @@ export class FixedSizeTableVirtualScrollStrategy implements VirtualScrollStrateg
   public attach(viewport: CdkVirtualScrollViewport): void {
     this.viewport = viewport;
     this.viewport.renderedRangeStream.subscribe(this.renderedRangeStream);
+    this.stickyChange.next(0);
     this.onDataLengthChanged();
   }
 
