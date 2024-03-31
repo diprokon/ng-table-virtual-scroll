@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- [#124](https://github.com/diprokon/ng-table-virtual-scroll/issues/124):
+  Call `onDataLengthChanged` only when it's changed
+- [#129](https://github.com/diprokon/ng-table-virtual-scroll/issues/129):
+  Trigger initial sticky position
+
 ## [1.6.0] - 2023-02-20
 
 ### Added
