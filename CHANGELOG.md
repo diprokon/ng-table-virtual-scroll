@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.6.1] - 2024-03-31
+
 ### Fixed
 
 - [#124](https://github.com/diprokon/ng-table-virtual-scroll/issues/124):
@@ -55,7 +57,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Build with Ivy (View Engine is no longer available in Angular v13)
 
-[Unreleased]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.6.0...HEAD
+[Unreleased]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.6.1...HEAD
+[1.6.1]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.6.0...v1.6.1
 [1.6.0]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.5.1...v1.6.0
 [1.5.1]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.5.0...v1.5.1
 [1.5.0]: https://github.com/diprokon/ng-table-virtual-scroll/compare/v1.4.1...v1.5.0
